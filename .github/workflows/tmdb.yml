@@ -1,0 +1,43 @@
+name: TMDB - affiches et fiches films
+# Se déclenche quand un fichier mois/*/films.txt est ajouté ou modifié (ou à la main depuis l'onglet Actions).
+on:
+  push:
+    paths: ['mois/*/films.txt']
+  workflow_dispatch:
+    inputs:
+      dossier:
+        description: 'Dossier du mois (ex. mois/7emeart-2026-11)'
+        required: true
+permissions:
+  contents: write
+jobs:
+  tmdb:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Dossiers à traiter
+        id: d
+        run: |
+          if [ -n "${{ github.event.inputs.dossier }}" ]; then
+            echo "dirs=${{ github.event.inputs.dossier }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "dirs=$(git diff --name-only HEAD~1 HEAD -- 'mois/*/films.txt' | xargs -r -n1 dirname | sort -u | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Dépendances
+        if: steps.d.outputs.dirs != ''
+        run: pip install --quiet pillow
+      - name: Récupération TMDB
+        if: steps.d.outputs.dirs != ''
+        env:
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+        run: python3 outils/tmdb_fetch.py ${{ steps.d.outputs.dirs }}
+      - name: Enregistrer dans le dépôt
+        if: steps.d.outputs.dirs != ''
+        run: |
+          git config user.name "TMDB bot"
+          git config user.email "actions@github.com"
+          git add mois/*/tmdb
+          git commit -m "TMDB : fiches et images pour ${{ steps.d.outputs.dirs }}" || echo "rien de nouveau"
+          git pull --rebase && git push

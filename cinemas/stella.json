@@ -1,0 +1,178 @@
+{
+ "id": "stella",
+ "nom": "Le Stella",
+ "ville": "Moncoutant-sur-Sèvre",
+ "couleur": "#F59042",
+ "nom_couleur": "Orange Stella #F59042",
+ "logo": "STE logo le stella.png",
+ "dossier_liens_mac": "file:/Volumes/Clients/Cine%CC%81ma%20Le%20Fauteuil%20Rouge/3%20VOLETS%20CINE%CC%81MA%20FAUTEUIL%20ROUGE%204/Links/",
+ "prefixe_images": "STE",
+ "titre_prochainement": "évènements ce mois-ci",
+ "slogan": "Cinéma indépendant, coopératif et proche de vous",
+ "mention_gestion": "Cinéma géré et animé par la SCIC Cinémas Bocage",
+ "contact": [
+  "Cinéma « Le Stella »",
+  "11 rue Jeanne d’Arc - 79320 Moncoutant-sur-Sèvre",
+  "05 49 72 81 28"
+ ],
+ "bandeau_bas": [
+  "Toutes les informations et réservations sur ",
+  "cinemalestella.com"
+ ],
+ "tarifs": [
+  {
+   "titre": "TARIFS 2026"
+  },
+  {
+   "ligne": "-14 ans & Courts-métrages",
+   "prix": "4,50"
+  },
+  {
+   "ligne": "Moins de 25 ans et étudiants",
+   "prix": "6,20"
+  },
+  {
+   "ligne": "Plein",
+   "prix": "7,60"
+  },
+  {
+   "ligne": "Réduit",
+   "prix": "6,60"
+  },
+  {
+   "sous": "POUR TOUS les mercredis (hors fériés)"
+  },
+  {
+   "sous": "Carte Demandeur d’emploi"
+  },
+  {
+   "sous": "Carte Cézam"
+  },
+  {
+   "sous": "Carte Famille nombreuse"
+  },
+  {
+   "sous": "Personnes à mobilité réduite"
+  },
+  {
+   "sous": "Plus de 60 ans (lun. au ven., hors fériés)"
+  },
+  {
+   "note": "Justificatifs obligatoires"
+  },
+  {
+   "note": "Contremarques : Cinéchèques, ANCV, CCU, Fleury Michon"
+  }
+ ],
+ "abonnements": [
+  {
+   "titre": "ABONNEMENTS 2026"
+  },
+  {
+   "note": "(Places valables 1 an)"
+  },
+  {
+   "ligne": "5 places",
+   "detail": "carte + recharge",
+   "prix": "35,00"
+  },
+  {
+   "ligne": "10 places",
+   "detail": "carte + recharge",
+   "prix": "65,00"
+  },
+  {
+   "ligne": "15 places",
+   "detail": "carte + recharge",
+   "prix": "90,00"
+  },
+  {
+   "ligne": "11 places ENFANT -14 ans",
+   "prix": "45,00"
+  },
+  {
+   "note": "Abonnements non nominatifs valables à toutes les séances (sauf séances spéciales et spectacles)"
+  },
+  {
+   "fort": "1 place offerte"
+  },
+  {
+   "centre": "toutes les 10 places consommées"
+  },
+  {
+   "centre": "en moins de 6 mois !"
+  },
+  {
+   "texte": "Valables à Bressuire, Argentonnay, Cerizay, Moncoutant, La Châtaigneraie, La Tranche-sur-Mer, Jard-sur-Mer et Talmont-Saint-Hilaire."
+  }
+ ],
+ "partenaires_en_plus": [
+  "STE logo ville moncoutant PROVISOIRE.png"
+ ],
+ "h_ligne_grille": 20.0,
+ "ordre_grille": "saisie",
+ "couleurs_grille": {
+  "rouge": "#D41818",
+  "violet": "#1BA1E2",
+  "bleu": "#E8650A"
+ },
+ "legende_grille": [
+  [
+   [
+    "Rouge",
+    "r"
+   ],
+   [
+    " : séances à 4,50 € pour tous   ·   ",
+    ""
+   ],
+   [
+    "Souligné",
+    "s"
+   ],
+   [
+    " : goûter offert par Super U   ·   ",
+    ""
+   ],
+   [
+    "Italique",
+    "i"
+   ],
+   [
+    " : courts-métrages",
+    ""
+   ]
+  ],
+  [
+   [
+    "Bleu",
+    "v"
+   ],
+   [
+    " : Ciné à 1 € le jeudi soir (Monsévriens)   ·   ",
+    ""
+   ],
+   [
+    "Orange",
+    "b"
+   ],
+   [
+    " : Ciné famille, 2 € pour les Monsévriens",
+    ""
+   ]
+  ]
+ ],
+ "dossier_assemblage_mac": "",
+ "fauteuil_affiche": "STE fauteuil orange.png",
+ "affiche_bas_grilles": 328.5,
+ "affiche_tarifs": 1.12,
+ "remerciements_pleine_largeur": true,
+ "remerciements_echelle": 0.95,
+ "affiche_disposition": "colonnes",
+ "affiche_largeur_grilles": 152,
+ "bandeau_bas_corps": 9.6,
+ "affiche_bandeau_bas_corps": 14,
+ "fauteuil": "STE fauteuil orange.png",
+ "affiche_largeur_jour": 40,
+ "_a_verifier": "tarifs = ceux de Cerizay en attendant les tarifs du Stella ; logo ville provisoire"
+}
