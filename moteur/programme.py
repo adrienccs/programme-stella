@@ -257,8 +257,8 @@ for vi, we in enumerate(WEEKENDS):
     x0, x1, sp, off = COLS[vi]
     n = len(we['films'])                        # lignes de grille
     nf = len(ordre_fiches(we))                  # fiches résumé
-    if not 1 <= nf <= 4 or n > 9:
-        raise SystemExit(f"Volet {vi+1} : {nf} fiches (1 à 4) et {n} lignes de grille (9 max)")
+    if not 1 <= nf <= 4 or n > 10:          # Stella : jusqu’à 10 films dans une semaine (h_ligne 18)
+        raise SystemExit(f"Volet {vi+1} : {nf} fiches (1 à 4) et {n} lignes de grille (10 max)")
     # heading
     h = E(heads_src[vi]) if vi < 2 else d.duplicate('ud0e9')
     if sp != SP1:

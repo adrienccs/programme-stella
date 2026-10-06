@@ -1,0 +1,929 @@
+{
+ "cinema": "stella",
+ "nom_fichier": "PROGRAMME STELLA 14-10 AU 10-11-2026",
+ "periode": {
+  "du": "14 octobre",
+  "au_num": "10",
+  "au_exposant": "",
+  "au_mois": "novembre",
+  "annee": 2026
+ },
+ "films": {
+  "samourais": {
+   "titre": "Ma famille de samouraïs",
+   "duree": "1h22",
+   "pays": "Brésil, Japon",
+   "realisateur": "Celia Catunda",
+   "sortie": "16 septembre 2026",
+   "avec": null,
+   "genre": "Animation, famille",
+   "affiche": "STE ma famille de samourais.jpg",
+   "resume": "São Paulo, années 1980. Pour un exposé sur ses origines japonaises, Noboru interroge son grand-père bougon, Hideo, qui lui raconte enfin son arrivée au Brésil…"
+  },
+  "joyeuse": {
+   "titre": "Joyeuse jungle !",
+   "duree": "1h10",
+   "pays": "Lettonie, Pologne",
+   "realisateur": "Edmunds Jansons",
+   "sortie": "07 octobre 2026",
+   "avec": null,
+   "genre": "Animation, aventure",
+   "affiche": "STE joyeuse jungle.jpg",
+   "resume": "En vacances dans la forêt tropicale, Elizabeth, 9 ans, doit garder son petit frère Léo… qui disparaît, emporté dans une pirogue !"
+  },
+  "cygne": {
+   "titre": "Le cygne et l’enfant",
+   "duree": "0h39",
+   "pays": "France",
+   "realisateur": "Mi-Young Baek",
+   "sortie": "16 septembre 2026",
+   "avec": null,
+   "genre": "Animation",
+   "affiche": "STE le cygne et l enfant.jpg",
+   "court": true,
+   "resume": "Trois courts métrages poétiques et oniriques de la réalisatrice sud-coréenne Mi-Young Baek."
+  },
+  "tom": {
+   "titre": "Le merveilleux hiver de Tom le chat",
+   "duree": "1h02",
+   "pays": "Pays-Bas, Belgique",
+   "realisateur": "Digna van der Put, Erik Verkerk, Joost van den Bosch",
+   "sortie": "11 novembre 2026",
+   "avec": null,
+   "genre": "Animation, famille",
+   "affiche": "STE le merveilleux hiver de tom le chat.jpg",
+   "court": true,
+   "grille": [
+    "Le merveilleux hiver",
+    "de Tom le chat"
+   ],
+   "resume": "Tom, le petit chat roux, et son amie Chat-Souris découvrent la neige… et un énorme chien tout poilu. Que la course en luge commence !"
+  },
+  "justin": {
+   "titre": "Justin le juste",
+   "duree": "1h50",
+   "pays": "France, Belgique",
+   "realisateur": "Éric Barbier",
+   "sortie": "23 septembre 2026",
+   "avec": "Alban Ivanov, Alexandra Lamy, Birane Ba",
+   "genre": "Comédie, guerre",
+   "affiche": "STE justin le juste.jpg",
+   "resume": "Pendant la Première Guerre mondiale, l’histoire d’un paysan naïf enrôlé de force dans l’armée française."
+  },
+  "garance": {
+   "titre": "Garance",
+   "duree": "1h55",
+   "pays": "France",
+   "realisateur": "Jeanne Herry",
+   "sortie": "23 septembre 2026",
+   "avec": "Adèle Exarchopoulos, Sara Giraudeau",
+   "genre": "Drame",
+   "affiche": "STE garance.jpg",
+   "resume": "Garance, jeune actrice vaillante et joyeuse, trouve dans l’alcool un réconfort. Puis elle change de vie : huit ans de joies et de coups durs."
+  },
+  "ducobu": {
+   "titre": "Ducobu et le fantôme de Saint-Potache",
+   "duree": "1h30",
+   "pays": "France",
+   "realisateur": "Élie Semoun",
+   "sortie": "07 octobre 2026",
+   "avec": "Élie Semoun, Frédérique Bel, Émilie Caen",
+   "genre": "Comédie, famille",
+   "affiche": "STE ducobu et le fantome de saint potache.jpg",
+   "grille": [
+    "Ducobu",
+    "et le fantôme de St-Potache"
+   ],
+   "resume": "C’est Halloween ! Latouche et Mlle Rateau emménagent dans une maison hantée par Anatole, le plus grand cancre de l’histoire de Saint-Potache…"
+  },
+  "mochy": {
+   "titre": "Mochy",
+   "duree": "1h25",
+   "pays": "Belgique, France",
+   "realisateur": "Jérémie Degruson, Yanis Belaid",
+   "sortie": "14 octobre 2026",
+   "avec": null,
+   "genre": "Animation, comédie",
+   "affiche": "STE mochy.jpg",
+   "resume": "Mochy, jeune chien au grand cœur mais pas très beau, rêve de participer au concours du plus beau chien… et d’y trouver l’humain qui l’aimera pour la vie."
+  },
+  "corset": {
+   "titre": "Le corset",
+   "duree": "1h31",
+   "pays": "France, Belgique",
+   "realisateur": "Louis Clichy",
+   "sortie": "14 octobre 2026",
+   "avec": "Rod Paradot, Gary Clichy",
+   "genre": "Animation",
+   "affiche": "STE le corset.jpg",
+   "resume": "Dans une ferme de la Beauce, Christophe, 11 ans, penche… et tombe. Obligé de porter un corset, il grandit comme il peut, découvre la musique et rencontre Clara."
+  },
+  "chien": {
+   "titre": "Chien bleu et autres belles histoires",
+   "duree": "0h33",
+   "pays": "France",
+   "realisateur": "Collectif",
+   "sortie": "16 septembre 2026",
+   "avec": null,
+   "genre": "Animation",
+   "affiche": "STE chien bleu.jpg",
+   "court": true,
+   "grille": "Chien bleu",
+   "resume": ""
+  },
+  "monde": {
+   "titre": "Le monde à l’envers",
+   "duree": "0h45",
+   "pays": "Belgique, France",
+   "realisateur": "Collectif",
+   "sortie": "07 octobre 2026",
+   "avec": null,
+   "genre": "Animation",
+   "affiche": "STE le monde a l envers.jpg",
+   "court": true,
+   "resume": ""
+  },
+  "ernest": {
+   "titre": "Le Noël d’Ernest et Célestine",
+   "duree": "1h11",
+   "pays": "France, Belgique",
+   "realisateur": "Aurélie Raphaël",
+   "sortie": "25 novembre 2026",
+   "avec": null,
+   "genre": "Animation",
+   "affiche": "STE le noel d ernest et celestine.jpg",
+   "grille": [
+    "Le Noël d’Ernest",
+    "et Célestine"
+   ],
+   "resume": "Cuisiner des charabiettes au miel, chercher le cadeau parfait, préparer un spectacle de patinage… Avec Ernest et Célestine, Noël est une fête pleine de poésie et de douceur."
+  },
+  "affreunard": {
+   "titre": "À la poursuite de l’Affreunard",
+   "duree": "0h44",
+   "pays": "France, Suisse",
+   "realisateur": "Benjamin Botella",
+   "sortie": "2026",
+   "avec": null,
+   "genre": "Animation",
+   "affiche": "STE a la poursuite de l affreunard.jpg",
+   "court": true,
+   "grille": [
+    "À la poursuite",
+    "de l’Affreunard"
+   ],
+   "resume": "Trois petites marmottes refusent d’hiberner sans connaître la fin de leur histoire du soir : elles partent la demander à l’horrible Affreunard en personne !"
+  },
+  "heart": {
+   "titre": "Heart of the Beast",
+   "duree": "1h41",
+   "pays": "États-Unis",
+   "realisateur": "David Ayer",
+   "sortie": "23 septembre 2026",
+   "avec": "Brad Pitt, J.K. Simmons, Anna Lambe",
+   "genre": "Aventure, thriller",
+   "affiche": "STE heart of the beast.jpg",
+   "resume": "Après un crash d’avion, un ancien des forces spéciales se retrouve perdu au cœur de l’Alaska avec son fidèle chien Odin. Ensemble, ils devront tout faire pour survivre."
+  },
+  "salut": {
+   "titre": "Notre salut",
+   "duree": "2h39",
+   "pays": "France, Belgique",
+   "realisateur": "Emmanuel Marre",
+   "sortie": "30 septembre 2026",
+   "avec": "Swann Arlaud, Sandrine Blancke",
+   "genre": "Drame historique",
+   "affiche": "STE notre salut.jpg",
+   "resume": "Septembre 1940. Henri Marre débarque à Vichy sans le sou, son traité politique sous le bras, persuadé de trouver enfin sa place dans la nouvelle administration."
+  },
+  "sipenses": {
+   "titre": "Si tu penses bien",
+   "duree": "1h34",
+   "pays": "France, Belgique",
+   "realisateur": "Géraldine Nakache",
+   "sortie": "16 septembre 2026",
+   "avec": "Monia Chokri, Niels Schneider",
+   "genre": "Drame",
+   "affiche": "STE si tu penses bien.jpg",
+   "resume": "À Dubaï, Gil rencontre Jacques. Leur coup de foudre mène à un mariage précipité… mais Jacques veut la soumettre à sa foi dévorante."
+  },
+  "shaun": {
+   "titre": "Shaun le Mouton : la Bêêête d’Halloween",
+   "duree": "1h17",
+   "pays": "Royaume-Uni",
+   "realisateur": "Steve Cox, Matthew Walker",
+   "sortie": "21 octobre 2026",
+   "avec": null,
+   "genre": "Animation, famille",
+   "affiche": "STE shaun le mouton la beeete d halloween.jpg",
+   "grille": "Shaun le Mouton",
+   "resume": "À Halloween, le Fermier saccage les citrouilles du troupeau. Shaun joue les savants fous… mais le Fermier disparaît et une bête rôde dans les bois !"
+  },
+  "cineado": {
+   "titre": "Ciné-Ado : film en attente",
+   "duree": "1h30",
+   "pays": "",
+   "realisateur": "(en attente)",
+   "sortie": "(en attente)",
+   "avec": null,
+   "genre": "(en attente)",
+   "affiche": "STE cine ado en attente.jpg",
+   "grille": "Film en attente",
+   "resume": "Film en attente : le titre de cette séance Ciné-Ado sera annoncé prochainement."
+  },
+  "gruffalo": {
+   "titre": "Gruffalo, de père en fils",
+   "duree": "0h53",
+   "pays": "Royaume-Uni",
+   "realisateur": "Collectif",
+   "sortie": "25 novembre 2026",
+   "avec": null,
+   "genre": "Animation",
+   "affiche": "STE gruffalo de pere en fils.jpg",
+   "court": true,
+   "grille": "Gruffalo de père en fils",
+   "resume": "Entre un Gruffalo et une souris, lequel est le plus effrayant ? Le Gruffalo et le Petit Gruffalo réunis dans un même programme."
+  },
+  "maison": {
+   "titre": "La maison de nos rêves",
+   "duree": "1h30",
+   "pays": "France, Belgique",
+   "realisateur": "Claude Zidi Jr.",
+   "sortie": "07 octobre 2026",
+   "avec": "Kev Adams, Chantal Ladesou, Camille Aguilar",
+   "genre": "Comédie",
+   "affiche": "STE la maison de nos reves.jpg",
+   "resume": "Un jeune couple achète en viager la maison de ses rêves à une dame qui semble mourante. Mais peu après la vente, elle va beaucoup mieux…"
+  },
+  "fausse": {
+   "titre": "Fausse note",
+   "duree": "1h30",
+   "pays": "France, Belgique",
+   "realisateur": "Alexandre Arcady",
+   "sortie": "07 octobre 2026",
+   "avec": "Kad Merad, Benoît Poelvoorde",
+   "genre": "Drame",
+   "affiche": "STE fausse note.jpg",
+   "resume": "Lors de son dernier concert à Paris, un grand chef d’orchestre est confronté à un admirateur insistant… et à un passé commun enfoui."
+  },
+  "miserables": {
+   "titre": "Les Misérables",
+   "duree": "2h56",
+   "pays": "France",
+   "realisateur": "Fred Cavayé",
+   "sortie": "14 octobre 2026",
+   "avec": "Vincent Lindon, Tahar Rahim, Camille Cottin",
+   "genre": "Drame historique",
+   "affiche": "STE les miserables.jpg",
+   "resume": "Ancien forçat évadé, Jean Valjean vit sous une nouvelle identité et consacre sa vie à faire le bien. Il promet à Fantine, mourante, de sauver sa fille Cosette des griffes des Thénardier."
+  },
+  "nivue": {
+   "titre": "Ni vue, ni connue",
+   "duree": "1h55",
+   "pays": "France, Belgique",
+   "realisateur": "Marc Fitoussi",
+   "sortie": "07 octobre 2026",
+   "avec": "Isabelle Huppert, Sandrine Kiberlain, Vincent Dedienne",
+   "genre": "Comédie",
+   "affiche": "STE ni vue ni connue.jpg",
+   "grille": "Ni vue ni connue",
+   "resume": "Corinne enchaîne les tournages comme figurante, dans l’espoir de décrocher un vrai rôle. Quand elle sympathise avec Sandrine Kiberlain, elle croit tenir sa chance…"
+  }
+ },
+ "semaines": [
+  {
+   "titre": "semaine du 14 au 20 octobre",
+   "jours": [
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20"
+   ],
+   "fermes": [
+    5
+   ],
+   "fiches": [
+    "samourais",
+    "justin",
+    "garance",
+    "joyeuse"
+   ],
+   "films": [
+    {
+     "film": "samourais",
+     "seances": {
+      "3": [
+       {
+        "h": "17h15",
+        "s": "r"
+       }
+      ],
+      "4": [
+       {
+        "h": "14h00",
+        "s": "rs"
+       }
+      ],
+      "6": [
+       {
+        "h": "17h15",
+        "s": "r"
+       }
+      ]
+     }
+    },
+    {
+     "film": "joyeuse",
+     "seances": {
+      "3": [
+       {
+        "h": "14h00",
+        "s": "rs"
+       }
+      ],
+      "4": [
+       {
+        "h": "17h15",
+        "s": "r"
+       }
+      ],
+      "6": [
+       {
+        "h": "14h00",
+        "s": "rs"
+       }
+      ]
+     }
+    },
+    {
+     "film": "cygne",
+     "seances": {
+      "3": [
+       {
+        "h": "16h00",
+        "s": "rs"
+       }
+      ],
+      "6": [
+       {
+        "h": "16h00",
+        "s": "rs"
+       }
+      ]
+     }
+    },
+    {
+     "film": "tom",
+     "seances": {
+      "4": [
+       {
+        "h": "16h00",
+        "s": "rs"
+       }
+      ]
+     },
+     "fusion": {
+      "de": 0,
+      "a": 3,
+      "texte": "Avant-première"
+     }
+    },
+    {
+     "film": "justin",
+     "seances": {
+      "0": [
+       "20h30"
+      ],
+      "3": [
+       "20h30"
+      ],
+      "6": [
+       "20h30"
+      ]
+     }
+    },
+    {
+     "film": "garance",
+     "seances": {
+      "1": [
+       {
+        "h": "20h30",
+        "s": "v"
+       }
+      ],
+      "2": [
+       "20h30"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "titre": "semaine du 21 au 27 octobre",
+   "jours": [
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27"
+   ],
+   "fermes": [
+    5
+   ],
+   "h_ligne": 18,
+   "fiches": [
+    "heart",
+    "salut",
+    "sipenses"
+   ],
+   "films": [
+    {
+     "film": "ducobu",
+     "seances": {
+      "0": [
+       {
+        "h": "14h00",
+        "s": "rs"
+       }
+      ],
+      "2": [
+       {
+        "h": "17h15",
+        "s": "r"
+       }
+      ],
+      "3": [
+       {
+        "h": "14h00",
+        "s": "rs"
+       }
+      ],
+      "4": [
+       {
+        "h": "17h15",
+        "s": "r"
+       }
+      ],
+      "6": [
+       {
+        "h": "17h00",
+        "s": "r"
+       }
+      ]
+     }
+    },
+    {
+     "film": "mochy",
+     "seances": {
+      "1": [
+       {
+        "h": "17h00",
+        "s": "r"
+       }
+      ],
+      "2": [
+       {
+        "h": "14h00",
+        "s": "bs"
+       }
+      ],
+      "6": [
+       {
+        "h": "14h30",
+        "s": "rs"
+       }
+      ]
+     }
+    },
+    {
+     "film": "corset",
+     "seances": {
+      "0": [
+       {
+        "h": "17h15",
+        "s": "r"
+       }
+      ],
+      "1": [
+       {
+        "h": "14h00",
+        "s": "rs"
+       }
+      ],
+      "3": [
+       {
+        "h": "17h00",
+        "s": "r"
+       }
+      ]
+     }
+    },
+    {
+     "film": "chien",
+     "seances": {
+      "0": [
+       {
+        "h": "16h00",
+        "s": "rs"
+       }
+      ],
+      "2": [
+       {
+        "h": "16h00",
+        "s": "bs"
+       }
+      ]
+     }
+    },
+    {
+     "film": "monde",
+     "seances": {
+      "1": [
+       {
+        "h": "16h00",
+        "s": "rs"
+       }
+      ],
+      "3": [
+       {
+        "h": "16h00",
+        "s": "rs"
+       }
+      ]
+     }
+    },
+    {
+     "film": "ernest",
+     "seances": {
+      "4": [
+       {
+        "h": "14h00",
+        "s": "rs"
+       }
+      ]
+     },
+     "fusion": {
+      "de": 0,
+      "a": 3,
+      "texte": "Avant-première"
+     }
+    },
+    {
+     "film": "affreunard",
+     "seances": {
+      "4": [
+       {
+        "h": "16h00",
+        "s": "rs"
+       }
+      ]
+     },
+     "fusion": {
+      "de": 0,
+      "a": 3,
+      "texte": "Avant-première"
+     }
+    },
+    {
+     "film": "heart",
+     "seances": {
+      "2": [
+       "20h30"
+      ],
+      "6": [
+       "20h30"
+      ]
+     }
+    },
+    {
+     "film": "salut",
+     "seances": {
+      "1": [
+       {
+        "h": "20h30",
+        "s": "v"
+       }
+      ]
+     }
+    },
+    {
+     "film": "sipenses",
+     "seances": {
+      "0": [
+       "20h30"
+      ],
+      "3": [
+       "20h30"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "titre": "semaine du 28 octobre au 3 novembre",
+   "titre_volet": "semaine du 28 oct. au 3 nov.",
+   "jours": [
+    "28",
+    "29",
+    "30",
+    "31",
+    "1",
+    "2",
+    "3"
+   ],
+   "fermes": [
+    5
+   ],
+   "h_ligne": 18,
+   "fiches": [
+    "ducobu",
+    "fausse",
+    "cineado"
+   ],
+   "films": [
+    {
+     "film": "ducobu",
+     "seances": {
+      "0": [
+       {
+        "h": "17h00",
+        "s": "r"
+       }
+      ],
+      "3": [
+       {
+        "h": "17h15",
+        "s": "r"
+       }
+      ]
+     }
+    },
+    {
+     "film": "mochy",
+     "seances": {
+      "1": [
+       {
+        "h": "17h15",
+        "s": "r"
+       }
+      ],
+      "4": [
+       {
+        "h": "17h15",
+        "s": "r"
+       }
+      ]
+     }
+    },
+    {
+     "film": "corset",
+     "seances": {
+      "0": [
+       {
+        "h": "14h30",
+        "s": "rs"
+       }
+      ],
+      "2": [
+       {
+        "h": "17h00",
+        "s": "r"
+       }
+      ],
+      "3": [
+       {
+        "h": "14h00",
+        "s": "rs"
+       }
+      ]
+     }
+    },
+    {
+     "film": "shaun",
+     "seances": {
+      "1": [
+       {
+        "h": "14h00",
+        "s": "rs"
+       }
+      ],
+      "4": [
+       {
+        "h": "14h00",
+        "s": "rs"
+       }
+      ]
+     }
+    },
+    {
+     "film": "cineado",
+     "seances": {
+      "2": [
+       {
+        "h": "14h00",
+        "s": "r"
+       }
+      ]
+     },
+     "etiquette": "Ciné-Ado"
+    },
+    {
+     "film": "chien",
+     "seances": {
+      "1": [
+       {
+        "h": "16h00",
+        "s": "rs"
+       }
+      ],
+      "3": [
+       {
+        "h": "16h00",
+        "s": "rs"
+       }
+      ]
+     }
+    },
+    {
+     "film": "gruffalo",
+     "seances": {
+      "4": [
+       {
+        "h": "16h00",
+        "s": "rs"
+       }
+      ]
+     },
+     "fusion": {
+      "de": 0,
+      "a": 3,
+      "texte": "Avant-première"
+     }
+    },
+    {
+     "film": "maison",
+     "seances": {
+      "0": [
+       "20h30"
+      ],
+      "2": [
+       "20h30"
+      ],
+      "3": [
+       "20h30"
+      ]
+     }
+    },
+    {
+     "film": "fausse",
+     "seances": {
+      "1": [
+       {
+        "h": "20h30",
+        "s": "v"
+       }
+      ],
+      "6": [
+       "20h30"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "titre": "semaine du 4 au 10 novembre",
+   "jours": [
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10"
+   ],
+   "fermes": [
+    5
+   ],
+   "fiches": [
+    "miserables",
+    "nivue",
+    "maison"
+   ],
+   "image_remplissage": {
+    "image": "STE les miserables photo 3.jpg",
+    "cadrage": [
+     0.5,
+     0.4
+    ],
+    "film": "miserables"
+   },
+   "films": [
+    {
+     "film": "miserables",
+     "seances": {
+      "0": [
+       "20h30"
+      ],
+      "3": [
+       "20h30"
+      ],
+      "4": [
+       "17h00"
+      ],
+      "6": [
+       "20h30"
+      ]
+     }
+    },
+    {
+     "film": "nivue",
+     "seances": {
+      "1": [
+       {
+        "h": "20h30",
+        "s": "v"
+       }
+      ],
+      "4": [
+       "14h30"
+      ]
+     }
+    },
+    {
+     "film": "maison",
+     "seances": {
+      "2": [
+       "20h30"
+      ]
+     }
+    }
+   ]
+  }
+ ],
+ "prochainement": [
+  {
+   "image": "STE bandeau cine kids.jpg",
+   "surtitre": "Vacances de la Toussaint",
+   "titre": "Ciné-Kids",
+   "ligne": "Goûter offert par Super U aux séances soulignées",
+   "ligne_grasse": "Séances enfants à 4,50 €",
+   "date": {
+    "jour": "Du",
+    "num": "17",
+    "mois": "octobre",
+    "heure": "au 2 nov."
+   },
+   "vedette_affiche": true,
+   "visuel_programme": "STE bloc cine kids programme.png",
+   "visuel_affiche_colonne": "STE bloc cine kids colonne.png"
+  },
+  {
+   "image": "STE bandeau cine famille.jpg",
+   "surtitre": "Ciné famille",
+   "titre": "Mochy · Chien bleu",
+   "ligne": "4,50 € pour les autres · justificatif obligatoire",
+   "ligne_grasse": "Tarif unique 2 € pour les Monsévriens",
+   "date": {
+    "jour": "Vendredi",
+    "num": "23",
+    "mois": "octobre",
+    "heure": "14h00"
+   },
+   "image_affiche": "STE bandeau cine famille affiche.jpg"
+  },
+  {
+   "image": "STE bandeau cine ado.jpg",
+   "surtitre": "Ciné-Ado",
+   "titre": "Film en attente",
+   "ligne": "Titre annoncé prochainement",
+   "ligne_grasse": "Séance à 4,50 €",
+   "date": {
+    "jour": "Vendredi",
+    "num": "30",
+    "mois": "octobre",
+    "heure": "14h00"
+   },
+   "image_affiche": "STE bandeau cine ado affiche.jpg"
+  }
+ ],
+ "couverture": {
+  "affiches": [
+   "STE les miserables.jpg",
+   "STE la maison de nos reves.jpg",
+   "STE shaun le mouton la beeete d halloween.jpg",
+   "STE heart of the beast.jpg",
+   "STE ducobu et le fantome de saint potache.jpg",
+   "STE mochy.jpg"
+  ],
+  "encart": {
+   "surtitre": "Vacances de la Toussaint",
+   "titre": "Ciné-Kids",
+   "ligne": "du 17 octobre au 2 novembre · goûter offert par Super U"
+  }
+ }
+}

@@ -1,9 +1,9 @@
-# Programme du cinéma Le 7e Art (Cerizay) — Copy Color Service
+# Programme du cinéma Le Stella (Moncoutant-sur-Sèvre) — Copy Color Service
 
-Programme mensuel du cinéma **Le 7e Art** à Cerizay (maquette 3 volets reprise du Fauteuil Rouge, A4 italienne, fonds perdus 3 mm, charte rouge #D41818 / noir).
-Kit dérivé de `adrienccs/programme-commynes` (oct. 2026) — ne jamais modifier ce dépôt-là depuis ici.
-Ce dépôt ne concerne **que le 7e Art** : les autres cinémas sont des projets séparés, avec leur propre dépôt.
-Le kit génère un **IDML** à ouvrir dans InDesign + un dossier **Links** + un **aperçu PNG/PDF**.
+Programme mensuel du cinéma **Le Stella** à Moncoutant-sur-Sèvre (maquette 3 volets reprise du 7e Art / Fauteuil Rouge,
+A4 italienne, fonds perdus 3 mm, charte **orange #F59042 / noir**) + affiche A3 du même mois.
+Kit dérivé de `adrienccs/programme-7emeArt` (06/10/2026) — ne JAMAIS modifier le dépôt du 7e Art (ni des autres cinémas) depuis ici.
+Ce dépôt ne concerne **que le Stella**. Le kit génère un **IDML** + **Links** + **aperçus**, livrés en dossier d'assemblage zippé.
 
 ## Organisation
 
@@ -32,7 +32,7 @@ de `Links` dans ce dossier → tout se relie seul. Sinon : panneau Liens → « 
 
 ## Dépôt
 
-Tout le kit vit dans le dépôt GitHub **privé** `adrienccs/programme-7emeart` (Le 7e Art uniquement).
+Tout le kit vit dans le dépôt GitHub **privé** `adrienccs/programme-stella` (Le Stella uniquement).
 - Début de séance : `git clone` du dépôt (ou `git pull`).
 - Fin de séance : `git add -A && git commit -m "<cinéma> <mois> : …" && git push`
   (fiche mois, images du mois, livrable IDML + aperçus, et toute évolution du moteur).
@@ -51,13 +51,13 @@ Le dépôt doit rester privé (polices commerciales dans `assets/polices`).
    résumé FR), « <film> affiche.jpg », « <film> photo 1..3.jpg » (sans texte, souvent 4K), RAPPORT.md.
    ⚠️ Les DURÉES et HORAIRES font foi d'après la grille du cinéma, pas TMDB. Résumés TMDB à raccourcir.
    Les affiches < 1000 px (signalées dans RAPPORT.md) ou en version teaser → demander la HD à Adrien.
-   Copier/normaliser les images retenues dans images/ avec le préfixe 7EA.
+   Copier/normaliser les images retenues dans images/ avec le préfixe STE.
 3. **Liste d'images** : envoyer à Adrien la liste exacte des visuels manquants (affiches HD, photos
    pour les images de remplissage, visuels événements « sans texte »).
 4. **Images** : `prep_images.py normalise` (webp → jpg 72 ppi) ; bandeaux événements :
    `prep_images.py bandeau photo.jpg "XXX bandeau nom.jpg" --haut-mm 35 --x .. --y ..`
    (le visage/sujet doit tomber dans la zone claire, au centre-droit). Préfixe des fichiers = `prefixe_images`.
-5. **Fiche mois** `mois/<id>-AAAA-MM/mois.json` (modèle : `mois/7emeart-2026-10/mois.json`).
+5. **Fiche mois** `mois/<id>-AAAA-MM/mois.json` (modèle : `mois/stella-2026-10/mois.json`).
 6. **Construction** :
    ```
    python3 moteur/programme.py --kit KIT --cinema cinemas/<id>.json --mois mois/<id>-AAAA-MM/mois.json \
@@ -105,7 +105,7 @@ Le dépôt doit rester privé (polices commerciales dans `assets/polices`).
 - Photos d'événements : on peut les teinter dans l'esprit de l'événement (ex. Octobre Rose → duotone rose/violet).
 - Couverture (retour client 03/10/2026) : logo agrandi, bandeau des dates plus haut et texte 12 pt,
   fauteuil remonté, icônes réseaux centrées sur le bloc adresse. Pas de film non diffusé en couverture.
-- Bandeau bas : « Toutes les informations et réservations sur cinema7emeart.com ».
+- Bandeau bas : « Toutes les informations et réservations sur cinemalestella.com ».
 - Abonnements : citer toutes les salles (Bressuire, Argentonnay, Cerizay, Moncoutant, La Châtaigneraie,
   La Tranche-sur-Mer, Jard-sur-Mer, Talmont-Saint-Hilaire) — à simplifier quand le groupe aura changé de nom.
 - Mention : « SCIC Cinémas Bocage » (avec un s).
@@ -134,60 +134,47 @@ titre_prochainement, slogan, mention_gestion, contact[3 lignes], bandeau_bas[tex
 tarifs[…], abonnements[…]` — éléments de tarifs : `{titre}`, `{ligne, prix, detail?}`, `{sous}`,
 `{texte}`, `{note}`, `{fort}`, `{centre}`.
 
-## Spécificités du 7e Art (validées au 1er mois, oct.–nov. 2026)
+## Spécificités du Stella (1er mois : 14 oct. – 10 nov. 2026)
 
-- 1 volet = 1 SEMAINE complète (mercredi → mardi) : clé `semaines` dans la fiche mois (au lieu de `weekends`).
-- Fiches résumé : seulement les films listés dans `"fiches": [clés]`, TOUJOURS triées automatiquement par 1re séance
-  de la semaine (toutes lignes du film confondues ; ordre imposé seulement via `ordre_fiches`) (1 à 4 ; 3 si la grille a 8 lignes),
-  la grille peut avoir jusqu'à 9 lignes. Les courts-métrages et avant-premières jeunesse n'ont pas de fiche.
-- Image de remplissage : le film qu'elle illustre passe en DERNIÈRE fiche du volet, juste avant l'image
-  (seule exception à l'ordre de diffusion ; clé `"film"` dans `image_remplissage`, sinon déduite du nom de l'image).
-- Choix des fiches : 1) TOUTES les avant-premières de la semaine ont leur fiche dans cette semaine (le moteur
-  avertit sinon), 2) on complète avec les plus gros films ; chaque gros film populaire a son résumé AU MOINS UNE FOIS
-  dans le mois (alerte sinon ; les courts-métrages en sont dispensés) ; un film qui revient
-  plusieurs semaines est présenté là où il reste de la place.
-- Ordre de la grille = ordre de saisie (`ordre_grille: "saisie"` dans la fiche cinéma), comme sur la grille du cinéma.
-- Lignes de grille : `{"film": clé, "seances": {"0": ["20h30", {"h": "16h00", "s": "rsi"}]}, options}`
-  - styles de séance `s` = ceux du programme ORIGINAL du cinéma (validé client 05/10/2026) :
-    `r` rouge = séance à 4,50 € · `s` souligné = goûter offert par Super U (une séance goûter est donc `rs`,
-    elle est aussi à 4,50 €) · `i` italique (auto pour les courts) · `v` violet SEUL, jamais souligné = Ciné à 1 € (lundi 20h30)
-    · `b`/`bs` bleu = événement (Ciné-Ados, Ciné-séniors).
-    Relever chaque séance en ZOOMANT sur l'original, puis vérifier qu'elle colle à la légende : si l'original se
-    contredit (ex. lundi 20h30 en rouge souligné, film non court en italique), appliquer la légende et le signaler ;
-  - options : `etiquette` (« Ciné-Ados », « Avant-première »… ajoutée sous le titre), `fusion` {de, a, texte}
-    (case fusionnée couleur : « Avant-première », « Séance spéciale… »), `gris` [jours] (cases grisées) ;
-  - semaine : `fermes` [jours] = colonne grisée (jeudi fermé) ; film : `"court": true` → titre et séances en italique.
-- Légende sous chaque grille (`legende_grille` = lignes de [texte, style], coupées à la main, mots-clés dans leur style :
-  « Rouge » en rouge, « Souligné » souligné, « Italique » en italique…), hauteur de ligne 20 pt (`h_ligne_grille`).
-- L'aperçu (render.py) dessine soulignés et italiques (Skew) : toujours vérifier qu'ils apparaissent.
-- Volet central : « évènements ce mois-ci » (Ciné-Ados, Ciné-Kids, Ciné-séniors…), 3 bandeaux de 31,5 mm.
-- Partenaires : ceux du Commynes + logo ville de Cerizay (`partenaires_en_plus`, redessiné en vectoriel).
-- Logo « Le 7e Art / Cerizay » vectorisé depuis l'ancien programme (`outils/logo_vecto.py`) : SVG, PDF, PNG HD.
-- Titre de fiche > 37 caractères : chasse réduite automatiquement (76 %).
-- Site du bandeau bas : cinemale7emeart.com (celui de l'ancien programme). Préfixe des images : `7EA`.
-- Tarifs Cerizay (06/10/2026, alignés sur La Châtaigneraie) : -14 ans & courts-métrages 4,50 · -25 ans et étudiants 6,20 · plein 7,60 · réduit 6,60.
-- Livraison : TOUJOURS un seul zip (< 30 Mo). L'assembleur recompresse à pixels identiques les JPEG > 5 Mo (projecteurs
-  12 Mo → 1,4 Mo) et le fauteuil est un PNG (`fauteuil` = « 7EA fauteuil rouge.png », plus le PSD de 7 Mo).
-  Ne plus faire de zip « LIENS COMMUNS » (liens oubliés = cadres « ? » dans l'en-tête, retour 06/10/2026). Images du mois ≤ 2400 px.
-- `dossier_liens_mac` doit TOUJOURS être un chemin `file:/…/` : un lien sans chemin est ignoré par InDesign
-  (cadres vides, rien dans le panneau Liens, script inopérant). Le moteur et l'assembleur ont un garde-fou.
-- Affiches des fiches : même taille dans TOUS les volets (la plus petite place disponible commande) ;
-  le texte du résumé garde toute la hauteur de son créneau.
-- Volet avec du vide : ajouter une fiche (4 max) plutôt que laisser un blanc. Si ça déborde, resserrer la grille
-  de cette semaine avec `"h_ligne": 18` (au lieu de 20 pt) et raccourcir le résumé fautif, plutôt que réduire les affiches.
+Mêmes règles que le 7e Art (1 volet = 1 SEMAINE mer→mar, clé `semaines`, fiches triées par 1re séance, image de
+remplissage, légende 2 lignes, 3 bandeaux « évènements ce mois-ci », remerciements pleine largeur, affiche A3 en colonnes).
+Différences propres au Stella :
+- Couleur du cinéma **#F59042** (orange) : bandeaux, en-têtes de grille, nuancier « Orange Stella ». Préfixe des images : `STE`.
+- **Séances « r » (4,50 €) en ROUGE** et non dans la couleur du cinéma : nuance `rouge` dans `couleurs_grille`
+  (moteur : `grid.ROUGE`). Codes de séance (légende de l'original du Stella) :
+  `r` rouge = 4,50 € pour tous · `s` souligné = goûter Super U (séance goûter = `rs`) · `i` italique = courts-métrages
+  (auto avec `"court": true`) · `v` **bleu ciel** (nuance « Grille violet » = #1BA1E2) = Ciné à 1 € le JEUDI soir
+  (Monsévriens, justificatif) · `b` **orange foncé** (nuance « Grille bleu » = #E8650A) = Ciné famille (2 € Monsévriens),
+  souligné si goûter (`bs`).
+- **Lundi fermé** : `"fermes": [5]` sur chaque semaine (colonne grisée).
+- Avant-premières : case fusionnée « Avant-première » (`fusion` {de, a}) sur les jours vides avant la séance, comme au 7e Art.
+- Une semaine peut avoir jusqu'à **10 lignes** de grille (limite relevée pour le Stella) → `"h_ligne": 18` et 3 fiches max.
+- Hauteur des affiches de fiche = la plus petite place du mois : éviter 4 fiches dans une semaine à 9-10 lignes
+  (sinon « fiches serrées » et chevauchement des textes). Priorités des fiches : films qui ne passent qu'une semaine,
+  gros films, film en attente (Ciné-Ado) ; les avant-premières jeunesse/courts n'ont pas de fiche si la place manque
+  (le moteur l'affiche en ATTENTION : à signaler à Adrien).
+- Film non connu (ex. Ciné-Ado sans titre) : fiche « Ciné-Ado : film en attente » (affiche provisoire générée,
+  champs « (en attente) ») + ligne de grille « Film en attente · Ciné-Ado » + bandeau événement « Film en attente ».
+- Logo : `outils/logo_cinema.py "Le Stella" "Moncoutant-sur-Sèvre" "#F59042" "assets/cinemas/stella/STE logo le stella"`.
+- Fauteuil : `STE fauteuil orange.png` (fauteuil rouge du 7e Art recoloré en orange).
+- Partenaires : ceux du 7e Art, logo ville de Cerizay remplacé par celui de Moncoutant-sur-Sèvre (`STE logo ville moncoutant.png`).
+- Contact (3 lignes) : « Cinéma « Le Stella » - 11 rue Jeanne d’Arc » / « 79320 Moncoutant-sur-Sèvre » / « 05 49 72 81 28 ».
+- Site du bandeau bas : cinemalestella.com. Mention : Cinéma géré et animé par la SCIC Cinémas Bocage.
+- Tarifs et abonnements : identiques à Cerizay (confirmé par Adrien le 06/10/2026).
+- Ciné-Kids : `outils/bloc_cinekids.py … --couleur "#F59042"` (programme 89,7 × 31,5 ; affiche colonne 121,4 × 111,5).
 
-## Affiche A3 (7e Art)
+## Affiche A3 (Stella)
 
 ```
-python3 moteur/affiche.py --kit . --cinema cinemas/7emeart.json --mois mois/7emeart-AAAA-MM/mois.json \
-       --images mois/7emeart-AAAA-MM/images --out SORTIE_AFF
-RENDER_FONTS=assets/polices RENDER_LINKS="SORTIE_AFF/<nom>/Links:assets/cinemas/7emeart:assets/communs-hd:assets/communs" \
+python3 moteur/affiche.py --kit . --cinema cinemas/stella.json --mois mois/stella-AAAA-MM/mois.json \
+       --images mois/stella-AAAA-MM/images --out SORTIE_AFF
+RENDER_FONTS=assets/polices RENDER_LINKS="SORTIE_AFF/<nom>/Links:assets/cinemas/stella:assets/communs-hd:assets/communs" \
   python3 moteur/render.py SORTIE_AFF/_idml SORTIE_AFF/apercu
-python3 moteur/assembler.py --kit . --cinema cinemas/7emeart.json --sortie SORTIE_AFF \
-       --nom "AFFICHE A3 7E ART …" --images mois/7emeart-AAAA-MM/images --version vNN --apercus SORTIE_AFF/apercu
+python3 moteur/assembler.py --kit . --cinema cinemas/stella.json --sortie SORTIE_AFF \
+       --nom "AFFICHE A3 STELLA …" --images mois/stella-AAAA-MM/images --version vNN --apercus SORTIE_AFF/apercu
 ```
 Moteur repris du Commynes (`moteur/affiche.py`), adapté au format SEMAINE (déclenché par `semaines` dans mois.json) :
-- en-tête projecteurs + logo + fauteuil rouge (`fauteuil_affiche` = « 7EA fauteuil rouge.png ») + 6 affiches + bandeau dates ;
+- en-tête projecteurs + logo + fauteuil rouge (`fauteuil_affiche` = « STE fauteuil orange.png ») + 6 affiches + bandeau dates ;
 - grilles sur 2 colonnes (semaines 1-2 à gauche, 3-4 à droite), mêmes styles de séances que le programme,
   agrandies automatiquement (échelle commune aux 2 colonnes), légende unique sur 2 lignes sous les grilles ;
 - rangée de 3 bandeaux « évènements ce mois-ci » (89,7 × 31,5 mm, mêmes images que le programme) ;
@@ -201,6 +188,7 @@ Bas des grilles réglable dans la fiche cinéma (`affiche_bas_grilles`, 321 mm) 
   `prep_images.py bandeau … --larg-mm 273 --haut-mm 36 --clair-de 0.52 --clair-a 0.76` (ou 134.5 × 26, clair 0.42–0.74).
 - Réglages affiche dans la fiche cinéma : `affiche_bas_grilles` (328,5) et `affiche_tarifs` (1,12).
 
+
 ## Logo uniformisé du réseau (validé par Adrien le 06/10/2026, demande client)
 
 Police **Advent Pro** (Google Fonts, licence OFL, fichiers dans `assets/polices-logo/`) — c'est la police du logo du Commynes.
@@ -208,20 +196,20 @@ Règle commune à TOUS les cinémas : ligne 1 = nom du cinéma en Advent Pro Lig
 minuscules avec capitale initiale (« Cerizay », « Argentonnay »), Advent Pro Bold (700), couleur du cinéma, alignée à
 droite ; jamais le mot « cinéma » dans le logo ; même emplacement et même hauteur sur le programme et l'affiche.
 Proportions, interlettrage et écart entre les lignes calés sur le logo du Commynes (référence) :
-`python3 outils/logo_cinema.py "Le 7e Art" "Cerizay" "#D41818" "assets/cinemas/7emeart/7EA logo le 7e art"`
-→ SVG + PDF vectoriels + PNG HD. L'ancien logo (CERIZAY en capitales) est conservé dans `assets/cinemas/7emeart/ancien/`.
+`python3 outils/logo_cinema.py "Le Stella" "Moncoutant-sur-Sèvre" "#F59042" "assets/cinemas/stella/STE logo le stella"`
+→ SVG + PDF vectoriels + PNG HD.
 - Visuel Ciné-Kids de l'affiche (V2 validée 06/10/2026) : crayons de couleur vectoriels + « CINÉ-KIDS » multicolore
   (Fredoka) + dates/goûter + photo d'un film jeunesse fondue à droite, cadre rouge. Généré par
-  `python3 outils/visuel_cinekids.py --photo <photo film> --dates "du 17 oct. au 2 nov." --out "mois/…/images/7EA visuel cine kids"`,
-  converti en JPG, puis `"visuel_affiche": "7EA visuel cine kids.jpg"` sur l'événement vedette dans mois.json.
+  `python3 outils/visuel_cinekids.py --photo <photo film> --dates "du 17 oct. au 2 nov." --out "mois/…/images/STE visuel cine kids"`,
+  converti en JPG, puis `"visuel_affiche": "STE visuel cine kids.jpg"` sur l'événement vedette dans mois.json.
 - Bloc Ciné-Kids de l'affiche (V2 validée 06/10/2026) : crayons de couleur vectoriels + « CINÉ-KIDS » multicolore (Fredoka)
   + dates en rouge + photo d'un film jeunesse fondue à droite, cadre rouge. Généré par
-  `python3 outils/bloc_cinekids.py --photo … --dates "du 17 oct. au 2 nov." --ligne1 … --ligne2 … --sortie "mois/…/images/7EA bloc cine kids.png"`
-  puis `"visuel_affiche": "7EA bloc cine kids.png"` sur l'événement vedette dans mois.json (remplace photo + textes du bandeau).
+  `python3 outils/bloc_cinekids.py --photo … --dates "du 17 oct. au 2 nov." --ligne1 … --ligne2 … --sortie "mois/…/images/STE bloc cine kids.png"`
+  puis `"visuel_affiche": "STE bloc cine kids.png"` sur l'événement vedette dans mois.json (remplace photo + textes du bandeau).
   À refaire à chaque vacances scolaires (autres dates, autre film).
 - Programme : même bloc Ciné-Kids au format bandeau (89,7 × 31,5 mm, mise en page compacte automatique) :
-  `outils/bloc_cinekids.py … --largeur 89.7 --hauteur 31.5 --sortie "mois/…/images/7EA bloc cine kids programme.png"`
-  puis `"visuel_programme": "7EA bloc cine kids programme.png"` sur l'événement dans mois.json.
+  `outils/bloc_cinekids.py … --largeur 89.7 --hauteur 31.5 --sortie "mois/…/images/STE bloc cine kids programme.png"`
+  puis `"visuel_programme": "STE bloc cine kids programme.png"` sur l'événement dans mois.json.
 - Retour Adrien 06/10/2026 (2) : programme → logos des remerciements répartis sur TOUTE la largeur du cadre
   (`remerciements_pleine_largeur: true`, `remerciements_echelle: 0.95`) ; affiche → disposition d'Argentonnay
   (`affiche_disposition: "colonnes"`) : colonne gauche = bloc Ciné-Kids vertical (`visuel_affiche_colonne`, généré par
@@ -232,35 +220,12 @@ Proportions, interlettrage et écart entre les lignes calés sur le logo du Comm
   (marge haute 3,3 mm), corps `bandeau_bas_corps` (9,6 pt = max sur une ligne avec cinemale7emeart.com) ; affiche :
   `affiche_bandeau_bas_corps` (14 pt). L'aperçu (render.py) tient compte des marges intérieures des cadres de texte.
 
-## 🔒 MAQUETTE VERROUILLÉE (validée par Adrien le 06/10/2026 — programme v16, affiche A3 v09)
+## 🔒 MAQUETTE — À FIGER APRÈS VALIDATION D'ADRIEN
 
-La mise en page doit être IDENTIQUE d'un mois à l'autre. Seul le CONTENU change (films, horaires, événements, images).
-- Ne JAMAIS modifier `cinemas/7emeart.json`, `moteur/*.py`, `outils/logo_cinema.py`, `outils/bloc_cinekids.py` pour un
-  nouveau mois. Tout passe par `mois/7emeart-AAAA-MM/mois.json` et les images du mois.
-- Contrôle OBLIGATOIRE avant chaque livraison (après render.py) :
-  `python3 outils/verif_maquette.py verifier --idml SORTIE/_idml --nom programme`
-  `python3 outils/verif_maquette.py verifier --idml SORTIE_AFF/_idml --nom affiche`
-  → doit afficher « identique à la référence validée ». Sinon : corriger le mois (texte trop long, mauvais champ…),
-  ne pas toucher au moteur.
-- Changement de maquette uniquement sur demande explicite d'Adrien : modifier, faire valider l'aperçu, puis
-  `verif_maquette.py figer …` (les deux) + noter le changement ici, et pousser `reference/` sur GitHub.
-- Références : `reference/maquette-programme.json`, `reference/maquette-affiche.json` ; livrables de référence :
-  `livrables/7emeart-2026-10/` (IDML + aperçus).
+v01 livrée le 06/10/2026, en attente de validation. Une fois validée : `python3 outils/verif_maquette.py figer --idml SORTIE/_idml --nom programme`
+et `… --nom affiche`, pousser `reference/`, puis la maquette ne change plus d'un mois à l'autre (seul le contenu change) :
+ne plus toucher à `cinemas/stella.json`, `moteur/*.py`, `outils/logo_cinema.py`, `outils/bloc_cinekids.py` ;
+contrôle `verif_maquette.py verifier` obligatoire avant chaque livraison (« identique à la référence validée »).
 
-Récapitulatif de la maquette figée :
-- Programme : 1 volet = 1 semaine ; fiches = avant-premières puis gros films, triées par 1re séance (film de l'image de
-  remplissage juste avant elle) ; affiches de fiche de même taille ; grilles stylées (rouge 4,50 € · souligné goûter ·
-  italique courts · violet seul Ciné à 1 € · bleu événements) + légende 2 lignes ; volet central : 3 bandeaux
-  « évènements ce mois-ci » (Ciné-Kids = bloc crayons + film jeunesse), remerciements en pleine largeur, tarifs,
-  bandeau bas 9,6 pt centré ; couverture : logo Advent Pro « Le 7e Art / Cerizay », fauteuil rouge, 6 affiches, encart.
-- Affiche A3 : disposition Argentonnay (événements à gauche avec bloc Ciné-Kids vertical, grilles à droite sans
-  bandeau semaine, dates dans la case « HORAIRES »), légende, tarifs, bandeau bas 14 pt, pied de page projecteurs.
-- Livraison : un seul zip par document (< 30 Mo), tous les liens `file:/`.
-
-Journal des changements de maquette :
-- 06/10/2026 : tarifs/abonnements repris mot pour mot de la maquette d'origine du 7e Art (plus de ligne « Ciné à 1 € » dans
-  les tarifs) ; affiche A3 : cases jours/horaires élargies (`affiche_largeur_jour` = 35 pt, programme inchangé à 22 pt).
-- 06/10/2026 (2) : affiche A3 au gabarit du Commynes — grilles 152 mm (`affiche_largeur_grilles`), cases jours 40 pt
-  (`affiche_largeur_jour`), colonne des titres ≈ 38 % de la grille ; colonne événements élargie (bloc Ciné-Kids 121,4 × 111,5 mm,
-  photo Shaun « photo 3 ») ; bloc_cinekids portrait : la photo prend la place restante sous les textes (plus de chevauchement).
-- 06/10/2026 (3) : tarifs Cerizay alignés sur La Châtaigneraie/Argentonnay : -25 ans et étudiants 6,20 €, plein 7,60 €.
+Journal :
+- 06/10/2026 : création du kit Stella à partir du 7e Art (v16/v09) ; séances 4,50 € en rouge ; 10 lignes de grille max.

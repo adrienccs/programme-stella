@@ -11,8 +11,8 @@
  "slogan": "Cinéma indépendant, coopératif et proche de vous",
  "mention_gestion": "Cinéma géré et animé par la SCIC Cinémas Bocage",
  "contact": [
-  "Cinéma « Le Stella »",
-  "11 rue Jeanne d’Arc - 79320 Moncoutant-sur-Sèvre",
+  "Cinéma « Le Stella » - 11 rue Jeanne d’Arc",
+  "79320 Moncoutant-sur-Sèvre",
   "05 49 72 81 28"
  ],
  "bandeau_bas": [
@@ -107,7 +107,7 @@
   }
  ],
  "partenaires_en_plus": [
-  "STE logo ville moncoutant PROVISOIRE.png"
+  "STE logo ville moncoutant.png"
  ],
  "h_ligne_grille": 20.0,
  "ordre_grille": "saisie",
@@ -173,6 +173,5 @@
  "bandeau_bas_corps": 9.6,
  "affiche_bandeau_bas_corps": 14,
  "fauteuil": "STE fauteuil orange.png",
- "affiche_largeur_jour": 40,
- "_a_verifier": "tarifs = ceux de Cerizay en attendant les tarifs du Stella ; logo ville provisoire"
+ "affiche_largeur_jour": 40
 }
