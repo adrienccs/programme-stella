@@ -1,1 +1,1 @@
-Programme v02 + affiche A3 v03 — 06/10/2026 : affiche, textes des grilles agrandis (horaires 9,5 pt, titres 8,6 pt, dates 10 pt). En attente de validation.
+Programme v03 + affiche A3 v04 — 06/10/2026 : Ciné famille 14h00 · 16h00 (Mochy · Chien bleu). Ciné-Ado : film en attente (info fin de semaine).
