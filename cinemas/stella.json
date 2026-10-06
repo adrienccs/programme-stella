@@ -164,7 +164,7 @@
  ],
  "dossier_assemblage_mac": "",
  "fauteuil_affiche": "STE fauteuil orange.png",
- "affiche_bas_grilles": 328.5,
+ "affiche_bas_grilles": 338.0,
  "affiche_tarifs": 1.12,
  "remerciements_pleine_largeur": true,
  "remerciements_echelle": 0.95,
@@ -173,5 +173,14 @@
  "bandeau_bas_corps": 9.6,
  "affiche_bandeau_bas_corps": 14,
  "fauteuil": "STE fauteuil orange.png",
- "affiche_largeur_jour": 40
+ "affiche_largeur_jour": 40,
+ "affiche_h_ligne": 20.0,
+ "affiche_corps_grille": {
+  "titre": 8.6,
+  "duree": 6.6,
+  "horaires": 9.5,
+  "jours": 8.0,
+  "dates": 10.0,
+  "fusion": 8.0
+ }
 }

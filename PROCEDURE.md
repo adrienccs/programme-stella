@@ -162,7 +162,10 @@ Différences propres au Stella :
 - Contact (3 lignes) : « Cinéma « Le Stella » - 11 rue Jeanne d’Arc » / « 79320 Moncoutant-sur-Sèvre » / « 05 49 72 81 28 ».
 - Site du bandeau bas : cinemalestella.com. Mention : Cinéma géré et animé par la SCIC Cinémas Bocage.
 - Tarifs et abonnements : identiques à Cerizay (confirmé par Adrien le 06/10/2026).
-- Ciné-Kids : `outils/bloc_cinekids.py … --couleur "#F59042"` (programme 89,7 × 31,5 ; affiche colonne 121,4 × 111,5).
+- Ciné-Kids : `outils/bloc_cinekids.py … --couleur "#F59042"` (programme 89,7 × 31,5 ; affiche colonne 121,4 × 121,0).
+- Affiche A3 (retour Adrien 06/10/2026, v03) : textes des grilles à corps FIXES (`affiche_corps_grille` : titre 8,6 · durée 6,6 ·
+  horaires 9,5 · jours 8 · dates 10 · cases fusionnées 8 pt), lignes de 20 pt pour toutes les semaines (`affiche_h_ligne`),
+  bas des grilles à 338 mm (`affiche_bas_grilles`). Ne pas dépasser : au-delà, les cases débordent (contrôle render.py).
 
 ## Affiche A3 (Stella)
 
@@ -230,4 +233,5 @@ contrôle `verif_maquette.py verifier` obligatoire avant chaque livraison (« id
 
 Journal :
 - 06/10/2026 : création du kit Stella à partir du 7e Art (v16/v09) ; séances 4,50 € en rouge ; 10 lignes de grille max.
+- 06/10/2026 (affiche v03) : textes des grilles de l'affiche agrandis (corps fixes, `affiche_corps_grille`, `affiche_h_ligne` 20, bas 338 mm).
 - 06/10/2026 (v02) : 4 fiches en semaine 3 grâce à `"h_ligne": 17` (semaine à 9 lignes) + résumés de 2 lignes ; films Ciné-Kids sans fiche = OK (programme Ciné-Kids dédié).

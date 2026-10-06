@@ -1,1 +1,1 @@
-Programme v02 + affiche A3 v02 — 06/10/2026 : 4 fiches en semaine 3 (h_ligne 17), en attente de validation.
+Programme v02 + affiche A3 v03 — 06/10/2026 : affiche, textes des grilles agrandis (horaires 9,5 pt, titres 8,6 pt, dates 10 pt). En attente de validation.

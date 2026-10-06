@@ -219,7 +219,35 @@ for _w in WE:
 
 
 def hf(we):
+    if CIN.get('affiche_h_ligne'):              # Stella : hauteur de ligne propre à l'affiche (identique pour toutes les semaines)
+        return float(CIN['affiche_h_ligne'])
     return float(we.get('h_ligne', H_FILM_PT))
+
+
+CORPS = CIN.get('affiche_corps_grille')        # Stella (retour 06/10/2026) : corps fixes du texte des grilles sur l'affiche
+
+
+def corps_grille(sid):
+    """Impose des corps absolus (pt, après mise à l'échelle) : titres, durée, horaires, jours, dates, cases fusionnées."""
+    if not CORPS:
+        return
+    for cell in d.story(sid).getroot().iter('Cell'):
+        col, row = (int(v) for v in cell.get('Name').split(':'))
+        if row == 0:
+            sizes = [CORPS['dates']] if col == 0 else [CORPS['jours']]
+        elif col == 0:
+            sizes = [CORPS['titre'], CORPS['duree']]
+        elif cell.get('ColumnSpan') and int(cell.get('ColumnSpan')) > 1:
+            sizes = [CORPS['fusion']]
+        else:
+            sizes = [CORPS['horaires']]
+        for k, c in enumerate(cell.iter('CharacterStyleRange')):
+            ps = sizes[min(k, len(sizes) - 1)]
+            c.set('PointSize', str(ps))
+            pr = c.find('Properties')
+            ld = pr.find('Leading') if pr is not None else None
+            if ld is not None and ld.get('type') == 'unit':
+                ld.text = str(round(ps * 1.08, 2))
 
 
 TITRES_SEMAINE = CIN.get('affiche_titres_semaine', not bool(MOIS.get('semaines')))   # retour client 06/10/2026
@@ -353,6 +381,7 @@ def one_grid(we, gx0_, gx1_, y):
     h = grid.build_one(d, g.get('ParentStory'), gw, (gx1_ - gx0_) * PT / K, h_film=hf(we), split=MOIS['films'],
                         day_w=float(CIN.get('affiche_largeur_jour', 22.0)))   # cases horaires élargies (retour client 06/10)
     scale_story(g.get('ParentStory'), K, lead=1.08)
+    corps_grille(g.get('ParentStory'))
     h *= K
     gx0, gy0, _, _ = d.bbox(g)
     d.set_bounds(g, gx0, gy0, gx0 + (gx1_ - gx0_) + 0.5, gy0 + h + 7)
