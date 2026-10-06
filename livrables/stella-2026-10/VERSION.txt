@@ -1,1 +1,1 @@
-Programme v01 + affiche A3 v01 — livrés le 06/10/2026, en attente de validation.
+Programme v02 + affiche A3 v02 — 06/10/2026 : 4 fiches en semaine 3 (h_ligne 17), en attente de validation.

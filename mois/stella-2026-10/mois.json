@@ -87,14 +87,14 @@
    "pays": "France",
    "realisateur": "Élie Semoun",
    "sortie": "07 octobre 2026",
-   "avec": "Élie Semoun, Frédérique Bel, Émilie Caen",
+   "avec": "Élie Semoun, Frédérique Bel",
    "genre": "Comédie, famille",
    "affiche": "STE ducobu et le fantome de saint potache.jpg",
    "grille": [
     "Ducobu",
     "et le fantôme de St-Potache"
    ],
-   "resume": "C’est Halloween ! Latouche et Mlle Rateau emménagent dans une maison hantée par Anatole, le plus grand cancre de l’histoire de Saint-Potache…"
+   "resume": "C’est Halloween ! Latouche et Mlle Rateau emménagent dans une maison hantée par l’ancien cancre Anatole…"
   },
   "mochy": {
    "titre": "Mochy",
@@ -116,7 +116,7 @@
    "avec": "Rod Paradot, Gary Clichy",
    "genre": "Animation",
    "affiche": "STE le corset.jpg",
-   "resume": "Dans une ferme de la Beauce, Christophe, 11 ans, penche… et tombe. Obligé de porter un corset, il grandit comme il peut, découvre la musique et rencontre Clara."
+   "resume": "Dans la Beauce, Christophe, 11 ans, doit porter un corset. Il grandit comme il peut et découvre la musique."
   },
   "chien": {
    "titre": "Chien bleu et autres belles histoires",
@@ -264,7 +264,7 @@
    "avec": "Kad Merad, Benoît Poelvoorde",
    "genre": "Drame",
    "affiche": "STE fausse note.jpg",
-   "resume": "Lors de son dernier concert à Paris, un grand chef d’orchestre est confronté à un admirateur insistant… et à un passé commun enfoui."
+   "resume": "Lors de son dernier concert, un chef d’orchestre est rattrapé par un admirateur insistant… et par leur passé."
   },
   "miserables": {
    "titre": "Les Misérables",
@@ -639,8 +639,9 @@
    "fermes": [
     5
    ],
-   "h_ligne": 18,
+   "h_ligne": 17,
    "fiches": [
+    "corset",
     "ducobu",
     "fausse",
     "cineado"

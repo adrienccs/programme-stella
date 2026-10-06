@@ -148,7 +148,8 @@ Différences propres au Stella :
   souligné si goûter (`bs`).
 - **Lundi fermé** : `"fermes": [5]` sur chaque semaine (colonne grisée).
 - Avant-premières : case fusionnée « Avant-première » (`fusion` {de, a}) sur les jours vides avant la séance, comme au 7e Art.
-- Une semaine peut avoir jusqu'à **10 lignes** de grille (limite relevée pour le Stella) → `"h_ligne": 18` et 3 fiches max.
+- Une semaine peut avoir jusqu’à **10 lignes** de grille (limite relevée pour le Stella) → `"h_ligne": 18` et 3 fiches ; à 9 lignes, `"h_ligne": 17` permet 4 fiches avec des résumés de 2 lignes (validé v02).
+- Les films du programme Ciné-Kids peuvent ne pas avoir de fiche (programme dédié, validé par Adrien le 06/10/2026).
 - Hauteur des affiches de fiche = la plus petite place du mois : éviter 4 fiches dans une semaine à 9-10 lignes
   (sinon « fiches serrées » et chevauchement des textes). Priorités des fiches : films qui ne passent qu'une semaine,
   gros films, film en attente (Ciné-Ado) ; les avant-premières jeunesse/courts n'ont pas de fiche si la place manque
@@ -229,3 +230,4 @@ contrôle `verif_maquette.py verifier` obligatoire avant chaque livraison (« id
 
 Journal :
 - 06/10/2026 : création du kit Stella à partir du 7e Art (v16/v09) ; séances 4,50 € en rouge ; 10 lignes de grille max.
+- 06/10/2026 (v02) : 4 fiches en semaine 3 grâce à `"h_ligne": 17` (semaine à 9 lignes) + résumés de 2 lignes ; films Ciné-Kids sans fiche = OK (programme Ciné-Kids dédié).
