@@ -71,7 +71,7 @@ FAMMAP = {
     ('Helvetica Neue', 'Condensed Bold'): 'HelveticaNeue-CondensedBold',
     ('Helvetica Neue', 'Light'): 'HelveticaNeue-Light', ('Helvetica Neue', 'Regular'): 'HelveticaNeue-Roman',
     ('Helvetica Neue', 'Bold'): 'HelveticaNeue-Bold', ('Helvetica Neue', 'Medium'): 'HelveticaNeue-Medium',
-    ('Minion Pro', 'Regular'): 'MinionPro-Regular', ('Roboto', 'Regular'): 'Roboto-Regular',
+    ('Minion Pro', 'Regular'): 'MinionPro-Regular', ('Zapf Dingbats', 'Regular'): 'ZapfDingbatsITC', ('Roboto', 'Regular'): 'Roboto-Regular',
 }
 MISSING = set()
 

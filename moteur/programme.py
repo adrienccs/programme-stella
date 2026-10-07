@@ -118,7 +118,44 @@ H_FILM_PT = float(CIN.get('h_ligne_grille', 22.0))    # hauteur ligne de grille
 def hf(we):                          # hauteur de ligne d'une semaine (« h_ligne » pour resserrer une grille chargée)
     return float(we.get('h_ligne', H_FILM_PT))
 LEGENDE = CIN.get('legende_grille')
-GRID_BOTTOM = 202.0 if LEGENDE else 206.0
+LEG_LEAD_MM = 6.5 * 25.4 / 72                  # interligne de la légende (6,5 pt)
+
+
+def codes_semaine(we):
+    """codes de légende réellement utilisés dans une semaine : lettres de style des séances, i (courts), coeur"""
+    u = set()
+    for k, se, o in we['films']:
+        if MOIS['films'][k].get('court'):
+            u.add('i')
+        if o.get('coeur'):
+            u.add('coeur')
+        for lst in se.values():
+            for t in lst:
+                if isinstance(t, dict):
+                    u |= set(t.get('s', ''))
+    return u
+
+
+def legende_semaine(we):
+    """legende_grille par lignes d'items {"code", "runs"} : seuls les items utilisés dans la semaine sont gardés
+    (retour client 07/10/2026 : pas de « Souligné : goûter » une semaine sans goûter)"""
+    if not LEGENDE or isinstance(LEGENDE, str) or not isinstance(LEGENDE[0][0], dict):
+        return LEGENDE
+    u = codes_semaine(we); out = []
+    for ligne in LEGENDE:
+        its = [it for it in ligne if it.get('code') in u or it.get('toujours')]
+        if not its:
+            continue
+        runs = []
+        for j, it in enumerate(its):
+            if j:
+                runs.append(['   ·   ', ''])
+            runs += [list(r) for r in it['runs']]
+        out.append(runs)
+    return out
+
+
+GRID_BOTTOM = 206.0
 
 
 def fill_synopsis(fid, f):
@@ -159,7 +196,7 @@ def make_fiche(key, x0, y0, sp, pitch, X1):
     ph = min(PH, pitch - 3.0)               # même taille d'affiche dans tous les volets
     bx0, by0, _, _ = d.bbox(po)
     d.set_bounds(po, bx0, by0, bx0 + ph * 0.75, by0 + ph)
-    img(po.get('Self'), f['affiche'], 'fill', (0.5, 0.0))
+    img(po.get('Self'), f['affiche'], 'fill', tuple(f.get('cadrage_affiche', (0.5, 0.0))))   # « cadrage_affiche » : [x, y] (1.0 = bas)
     cx0, cy0, cx1, cy1 = d.bbox(co)
     qx0, qy0, qx1, qy1 = d.bbox(pi)
     d.set_bounds(co, cx0, cy0, cx0 + 31, cy1)
@@ -196,6 +233,9 @@ def _norm(e):                       # [clé, séances, options?] ou {"film", "se
 
 for _we in WEEKENDS:
     _we['films'] = [_norm(e) for e in _we['films']]
+# bas des grilles : la légende (2 ou 3 lignes selon la semaine la plus chargée) doit tenir au-dessus du massicot
+LEG_N = max((len(legende_semaine(w) or []) for w in WEEKENDS), default=0)
+GRID_BOTTOM = (202.0 - max(0, LEG_N - 2) * 1.5) if LEGENDE else 206.0   # 3 lignes : grilles remontées de 1,5 mm
 
 def _premiere(item):              # ordre de diffusion = 1re séance du week-end
     s = item[1]
@@ -316,6 +356,19 @@ for vi, we in enumerate(WEEKENDS):
     gx0, gy0, _, _ = d.bbox(g)
     d.set_bounds(g, gx0, gy0, gx0 + (x1 - x0) + 0.5, gy0 + h + 7)
     d.move(g, x0 - gx0, (GRID_BOTTOM + off - h) - gy0)
+    # picto « malentendants » (boucle magnétique, picto officiel du Fauteuil Rouge) en bas à droite de la case titre
+    _gt = GRID_BOTTOM + off - h
+    _tw = ((x1 - x0) * PT - 7 * 22.0) / PT
+    for _ri, (_k, _s, _o) in enumerate(films_grille):
+        if _o.get('malentendants'):
+            _ph = 3.0
+            _yb = _gt + (grid.H_DAYS + (_ri + 1) * hf(we)) / PT - 0.8
+            _xr = x0 + _tw - 1.0
+            _r = d.duplicate('ubdf0')
+            to_spread(_r, sp)
+            d.set_bounds(_r, _xr - _ph, _yb - _ph, _xr, _yb)
+            _r.set('FillColor', 'Swatch/None'); _r.set('StrokeWeight', '0')
+            img(_r.get('Self'), CIN.get('picto_malentendants', '7EA picto malentendants.png'), 'fit')
 d.delete('ucf09')
 
 if LEGENDE:                                       # légende sous chaque grille, lignes coupées à la main
@@ -327,7 +380,8 @@ if LEGENDE:                                       # légende sous chaque grille,
         lg = d.duplicate('ubedb')
         to_spread(lg, sp)
         lg.set('FillColor', 'Swatch/None')
-        d.set_bounds(lg, x0, GRID_BOTTOM + off + 0.5, x1, GRID_BOTTOM + off + 5.2)
+        LEG_W = legende_semaine(we)
+        d.set_bounds(lg, x0, GRID_BOTTOM + off + 0.5, x1, GRID_BOTTOM + off + 0.5 + LEG_N * LEG_LEAD_MM + 0.1)
         st = d.story(story_of(lg)).getroot()
         psr = st.find('Story/ParagraphStyleRange')
         for extra in st.find('Story').findall('ParagraphStyleRange')[1:]:
@@ -351,8 +405,8 @@ if LEGENDE:                                       # légende sous chaque grille,
         ld = pr.find('Leading')
         if ld is None:
             ld = etree.SubElement(pr, 'Leading'); ld.set('type', 'unit')
-        ld.text = '7'
-        for li, ligne in enumerate(LEGENDE):
+        ld.text = '6.5'
+        for li, ligne in enumerate(LEG_W):
             for si, (txt, sty) in enumerate(ligne):
                 c = copy.deepcopy(tpl)
                 if 'r' in sty: c.set('FillColor', grid.ROUGE or BLUE)
@@ -362,8 +416,10 @@ if LEGENDE:                                       # légende sous chaque grille,
                 if 's' in sty: c.set('Underline', 'true'); c.set('UnderlineOffset', '1.2'); c.set('UnderlineWeight', '0.5')
                 if 'i' in sty: c.set('Skew', '12')
                 if sty: c.set('FontStyle', '77 Bold Condensed')
+                if 'z' in sty:                   # pictogramme Zapf Dingbats (♥ coup de cœur)
+                    grid.set_font(c, 'Zapf Dingbats', 'Regular')
                 last = si == len(ligne) - 1
-                etree.SubElement(c, 'Content').text = txt + ('\u2028' if last and li < len(LEGENDE) - 1 else '')
+                etree.SubElement(c, 'Content').text = txt + ('\u2028' if last and li < len(LEG_W) - 1 else '')
                 psr.append(c)
         tfp = lg.find('TextFramePreference')
         if tfp is not None:
@@ -573,6 +629,19 @@ for _k, _logo in enumerate(CIN.get('partenaires_en_plus', [])):     # logos ajou
     _x = _sx1 + 1.6 + _k * 8.0
     d.set_bounds(_r, _x, _sy0 - 0.8, _x + _hh * _w / _h, _sy1 + 0.8)
     img(_r.get('Self'), _logo, 'fit', (0.5, 0.5))
+# logos du gabarit à remplacer (fiche cinéma « remplacer_logos » : {lien d'origine: nouveau fichier}) — retour client
+# 07/10/2026 : « Poitou-Charentes Cinéma » → logo Région Nouvelle-Aquitaine. Même hauteur, largeur selon le logo.
+for _old, _new in CIN.get('remplacer_logos', {}).items():
+    _q = urllib.parse.quote(_old)
+    for _r in [r_ for t_ in d.spreads.values()
+               for r_ in t_.xpath(f'//Rectangle[.//Link[contains(@LinkResourceURI,"{_q}")]]')]:
+        _x0, _y0, _x1, _y1 = d.bbox(_r)
+        _w, _h = Image.open(find_img(_new)).size
+        for ch in list(_r):
+            if ch.tag in ('Image', 'PDF', 'EPS'):
+                _r.remove(ch)
+        d.set_bounds(_r, _x0, _y0, _x0 + (_y1 - _y0) * _w / _h, _y1)
+        img(_r.get('Self'), _new, 'fit', (0.5, 0.5))
 _g = E('uc331')
 _g.set('ItemTransform', fmt(mul([REM_SCALE, 0, 0, REM_SCALE, 0, 0], M(_g.get('ItemTransform')))))
 _rx0, _ry0, _rx1, _ry1 = d.bbox(E('uc346'))
@@ -788,13 +857,26 @@ for k, (rid, s, top, xc) in enumerate(COVER_RECTS):
     if k >= len(aff):
         d.delete(rid)
         continue
-    img(rid, aff[k], 'fill', (0.5, 0.0))
+    _cad = next((tuple(f_['cadrage_affiche']) for f_ in MOIS['films'].values()
+                 if f_.get('affiche') == aff[k] and f_.get('cadrage_affiche')), (0.5, 0.0))
+    img(rid, aff[k], 'fill', _cad)
     r = E(rid)
     x0, y0, x1, y1 = d.bbox(r)
     cx = (x0 + x1) / 2 if xc is None else xc
     r.set('ItemTransform', fmt(mul([s, 0, 0, s, 0, 0], M(r.get('ItemTransform')))))
     nx0, ny0, nx1, ny1 = d.bbox(r)
     d.move(r, cx - (nx0 + nx1) / 2, top - ny0)
+
+# réseaux sociaux de la couverture : le fichier commun montre Facebook, Instagram, X, TikTok (dans cet ordre).
+# « reseaux_visibles » = part gauche du fichier à garder (7e Art : Facebook seul → [0, 0.13]), recentrée.
+_rv = CIN.get('reseaux_visibles')
+if _rv:
+    for _r in [r_ for t_ in d.spreads.values()
+               for r_ in t_.xpath('//Rectangle[.//Link[contains(@LinkResourceURI,"SEAUX.ai")]]')]:
+        _x0, _y0, _x1, _y1 = d.bbox(_r); _w = _x1 - _x0; _cx = (_x0 + _x1) / 2
+        d.set_bounds(_r, _x0 + _w * _rv[0], _y0, _x0 + _w * _rv[1], _y1)
+        _n0, _, _n1, _ = d.bbox(_r)
+        d.move(_r, _cx - (_n0 + _n1) / 2, 0)
 
 CO = MOIS.get('couverture', {}).get('encart')
 if CO:
@@ -851,6 +933,18 @@ for k, old in enumerate(['C=0 M=100 J=100 N=0', 'C=0 M=88 J=75 N=0', 'R=187 V=24
     el2 = re.sub(r'Space="[^"]*"', 'Space="RGB"', el)
     el2 = re.sub(r'ColorValue="[^"]*"', f'ColorValue="{rgb}"', el2)
     el2 = re.sub(r' Name="[^"]*"', f' Name="{CIN["nom_couleur"]}{"" if k == 0 else " " + str(k + 1)}"', el2)
+    gx = gx.replace(el, el2)
+# déclinaisons de la couleur du cinéma (repris de la Belle épine) : les gris neutres du gabarit listés dans la fiche
+# cinéma « declinaisons » (ex. bandeau durée/pays des fiches « C=32 M=25 J=27 N=7 ») prennent une teinte claire
+for _old, _hx in CIN.get('declinaisons', {}).items():
+    m = re.search(r'(<Color Self="Color/' + re.escape(_old) + r'"[^>]*/>)', gx)
+    if not m:
+        WARN.append(f'déclinaison : nuance « {_old} » absente du gabarit'); continue
+    _hx = _hx.lstrip('#'); _rgb = ' '.join(str(int(_hx[i:i + 2], 16)) for i in (0, 2, 4))
+    el = m.group(1)
+    el2 = re.sub(r'Space="[^"]*"', 'Space="RGB"', el)
+    el2 = re.sub(r'ColorValue="[^"]*"', f'ColorValue="{_rgb}"', el2)
+    el2 = re.sub(r' Name="[^"]*"', f' Name="{CIN["nom_couleur"]} - {_old.split(" ")[0]} #{_hx.upper()}"', el2)
     gx = gx.replace(el, el2)
 _base = re.search(r'(<Color Self="Color/C=0 M=100 J=100 N=0"[^>]*/>)', gx).group(1)
 for _nm, _hx in CIN.get('couleurs_grille', {'violet': '#6A1B9A', 'bleu': '#1565C0'}).items():

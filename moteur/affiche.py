@@ -177,7 +177,9 @@ POST_H = POST_B - HEAD_B - 8.0
 slot_w = (X1 - X0) / max(1, n_aff)
 for k, fname in enumerate(aff):
     r = take(COVER[k])
-    img(r, fname, 'fill', (0.5, 0.0))
+    _cad = next((tuple(f_['cadrage_affiche']) for f_ in MOIS['films'].values()
+                 if f_.get('affiche') == fname and f_.get('cadrage_affiche')), (0.5, 0.0))
+    img(r, fname, 'fill', _cad)
     x0, y0, x1, y1 = d.bbox(r)
     s = POST_H / (y1 - y0)
     r.set('ItemTransform', fmt(mul([s, 0, 0, s, 0, 0], M(r.get('ItemTransform')))))
@@ -204,6 +206,39 @@ BODY_T = DATE_B + 6.0
 BODY_B = float(os.environ.get('AFF_BODY_B', CIN.get('affiche_bas_grilles', 325.0)))   # réglable par cinéma
 RX0, RX1 = X1 - 155.0, X1                # grilles un peu moins larges (retour Adrien)
 SEMAINE = bool(MOIS.get('semaines'))          # 7e Art : 1 grille par SEMAINE, 6 à 8 films chacune
+
+
+def legende_mois():
+    """légende de l'affiche : items de « legende_grille » utilisés dans AU MOINS une semaine du mois"""
+    L = CIN.get('legende_grille')
+    if not L or isinstance(L, str) or not isinstance(L[0][0], dict):
+        return L
+    u = set()
+    for w in MOIS.get('semaines') or MOIS.get('weekends', []):
+        for e in w['films']:
+            k, se, o = (e['film'], e.get('seances', {}), e) if isinstance(e, dict) else (e[0], e[1], e[2] if len(e) > 2 else {})
+            if MOIS['films'][k].get('court'):
+                u.add('i')
+            if o.get('coeur'):
+                u.add('coeur')
+            for lst in se.values():
+                for t in lst:
+                    if isinstance(t, dict):
+                        u |= set(t.get('s', ''))
+    out = []
+    for ligne in L:
+        its = [it for it in ligne if it.get('code') in u or it.get('toujours')]
+        if its:
+            runs = []
+            for jj, it in enumerate(its):
+                if jj:
+                    runs.append(['   ·   ', ''])
+                runs += [list(r) for r in it['runs']]
+            out.append(runs)
+    return out
+
+
+LEG_LINES = len(legende_mois() or [])
 WE = MOIS.get('semaines') or MOIS['weekends']
 H_FILM_PT = float(CIN.get('h_ligne_grille', 22.0))
 
@@ -258,7 +293,7 @@ if COLONNES:
     PRO = MOIS.get('prochainement', [])[:3]
     GW = float(CIN.get('affiche_largeur_grilles', 170.0))
     RX0, RX1 = X1 - GW, X1
-    LEG_H = 9.0 if CIN.get('legende_grille') else 0.0
+    LEG_H = (1.2 + LEG_LINES * 11 * 25.4 / 72) if CIN.get('legende_grille') else 0.0
     GRID_B = BODY_B - LEG_H - 1.5
     COLS_G = [(RX0, RX1, WE)]
     _base = sum((grid.H_DAYS + len(w['films']) * hf(w)) * 25.4 / 72 for w in WE)
@@ -272,7 +307,7 @@ elif SEMAINE:
     VED_H, EV_H2, VED_ZOOM = 36.0, 26.0, 1.7    # événement vedette (ex. Ciné-Kids) pleine largeur, autres dessous
     _ved = any(e.get('vedette_affiche') for e in PRO)
     PRO_T = (BODY_B - (9.6 + (VED_H + 3.0 + EV_H2 if _ved else EV_H) + 2.2)) if PRO else BODY_B
-    LEG_H = 8.0 if CIN.get('legende_grille') else 0.0
+    LEG_H = (0.2 + LEG_LINES * 11 * 25.4 / 72) if CIN.get('legende_grille') else 0.0
     GRID_B = PRO_T - 4.0 - LEG_H
     MID = (X0 + X1) / 2
     COLS_G = [(X0, MID - 3.0, WE[:2]), (MID + 3.0, X1, WE[2:4])]
@@ -387,6 +422,21 @@ def one_grid(we, gx0_, gx1_, y):
     d.set_bounds(g, gx0, gy0, gx0 + (gx1_ - gx0_) + 0.5, gy0 + h + 7)
     d.move(g, gx0_ - gx0, y - gy0)
     round_bottom(gx0_, gx1_, y + h, K, hf(we))
+    # picto « malentendants » en bas à droite de la case titre (comme le programme)
+    _dw = float(CIN.get('affiche_largeur_jour', 22.0))
+    _tw = ((gx1_ - gx0_) * PT / K - 7 * _dw) * K / PT
+    _films = list(we['films']) if CIN.get('ordre_grille') == 'saisie' else sorted(we['films'], key=_premiere)
+    for _ri, _e in enumerate(_films):
+        _o = _e[2] if isinstance(_e, (list, tuple)) and len(_e) > 2 else {}
+        if _o.get('malentendants'):
+            _ph = 3.0 * K * 1.4
+            _yb = y + (grid.H_DAYS + (_ri + 1) * hf(we)) * K / PT - 0.8 * K
+            _xr = gx0_ + _tw - 1.0 * K
+            _r = take('ubdf0', dup=True)
+            _p = _r.getparent(); _p.remove(_r); _p.append(_r)          # premier plan (au-dessus de la grille)
+            d.set_bounds(_r, _xr - _ph, _yb - _ph, _xr, _yb)
+            _r.set('FillColor', 'Swatch/None'); _r.set('StrokeWeight', '0')
+            img(_r.get('Self'), CIN.get('picto_malentendants', '7EA picto malentendants.png'), 'fit')
     return y + h
 
 
@@ -404,8 +454,8 @@ else:
         y = one_grid(we, RX0, RX1, y) + WE_GAP
     GRID_END = y - WE_GAP
 
-LEGENDE = CIN.get('legende_grille')
-if SEMAINE and LEGENDE:                          # légende unique sous les grilles, 2 lignes centrées
+LEGENDE = legende_mois()
+if SEMAINE and LEGENDE:                          # légende unique sous les grilles, lignes centrées
     if isinstance(LEGENDE, str):
         LEGENDE = [[[LEGENDE, '']]]
     lg = take('ubedb', dup=True)
@@ -445,6 +495,8 @@ if SEMAINE and LEGENDE:                          # légende unique sous les gril
             if 's' in sty: c_.set('Underline', 'true'); c_.set('UnderlineOffset', '1.6'); c_.set('UnderlineWeight', '0.7')
             if 'i' in sty: c_.set('Skew', '12')
             if sty: c_.set('FontStyle', '77 Bold Condensed')
+            if 'z' in sty:                       # ♥ coup de cœur (Zapf Dingbats)
+                grid.set_font(c_, 'Zapf Dingbats', 'Regular')
             last = si == len(ligne) - 1
             etree.SubElement(c_, 'Content').text = txt + ('\u2028' if last and li < len(LEGENDE) - 1 else '')
             psr.append(c_)
@@ -833,6 +885,19 @@ for k, old in enumerate(['C=0 M=100 J=100 N=0', 'C=0 M=88 J=75 N=0', 'R=187 V=24
     el2 = re.sub(r'Space="[^"]*"', 'Space="RGB"', el)
     el2 = re.sub(r'ColorValue="[^"]*"', f'ColorValue="{rgb}"', el2)
     el2 = re.sub(r' Name="[^"]*"', f' Name="{CIN["nom_couleur"]}{"" if k == 0 else " " + str(k + 1)}"', el2)
+    gx = gx.replace(el, el2)
+# déclinaisons (comme le programme) : sur l'affiche, seule l'alternance des lignes de grille (« R=211 V=211 B=211 »)
+for _old, _hx in CIN.get('declinaisons', {}).items():
+    if not _old.startswith('R=211'):
+        continue
+    m = re.search(r'(<Color Self="Color/' + re.escape(_old) + r'"[^>]*/>)', gx)
+    if not m:
+        continue
+    _hx = _hx.lstrip('#'); _rgb = ' '.join(str(int(_hx[i:i + 2], 16)) for i in (0, 2, 4))
+    el = m.group(1)
+    el2 = re.sub(r'Space="[^"]*"', 'Space="RGB"', el)
+    el2 = re.sub(r'ColorValue="[^"]*"', f'ColorValue="{_rgb}"', el2)
+    el2 = re.sub(r' Name="[^"]*"', f' Name="{CIN["nom_couleur"]} - {_old.split(" ")[0]} #{_hx.upper()}"', el2)
     gx = gx.replace(el, el2)
 _base = re.search(r'(<Color Self="Color/C=0 M=100 J=100 N=0"[^>]*/>)', gx).group(1)
 for _nm, _hx in CIN.get('couleurs_grille', {}).items():

@@ -13,6 +13,17 @@ H_SPACER = 5.669291338582678
 H_FILM = 29.5
 
 
+def set_font(csr, family, style):
+    csr.set('FontStyle', style)
+    pr = csr.find('Properties')
+    if pr is None:
+        pr = etree.SubElement(csr, 'Properties')
+    af = pr.find('AppliedFont')
+    if af is None:
+        af = etree.SubElement(pr, 'AppliedFont'); af.set('type', 'string')
+    af.text = family
+
+
 def _cells(table):
     return {c.get('Name'): c for c in table.findall('Cell')}
 
@@ -193,6 +204,16 @@ def build_one(d, story_id, we, total_w_pt, h_film=18.0, split=None, day_w=22.0):
             x.set('PointSize', '8' if k == 0 else '7')
             if opts.get('court'):
                 x.set('Skew', '12')                      # courts-métrages en italique
+        if opts.get('coeur'):                            # coup de cœur : ♥ (Zapf Dingbats) couleur du cinéma après le titre
+            _c0 = list(c.iter('CharacterStyleRange'))[0]
+            _h = copy.deepcopy(_c0)
+            for x in list(_h):
+                if x.tag in ('Content', 'Br'):
+                    _h.remove(x)
+            set_font(_h, 'Zapf Dingbats', 'Regular')
+            _h.set('FillColor', BLUE); _h.set('PointSize', '7'); _h.set('Skew', '0')
+            etree.SubElement(_h, 'Content').text = '\u00a0\u2665'
+            _c0.addnext(_h)
         fus = opts.get('fusion')
         gris = set(opts.get('gris', [])) | fermes
         i = 0

@@ -161,7 +161,13 @@ Différences propres au Stella :
 - Partenaires : ceux du 7e Art, logo ville de Cerizay remplacé par celui de Moncoutant-sur-Sèvre (`STE logo ville moncoutant.png`).
 - Contact (3 lignes) : « Cinéma « Le Stella » - 11 rue Jeanne d’Arc » / « 79320 Moncoutant-sur-Sèvre » / « 05 49 72 81 28 ».
 - Site du bandeau bas : cinemalestella.com. Mention : Cinéma géré et animé par la SCIC Cinémas Bocage.
-- Tarifs et abonnements : identiques à Cerizay (confirmé par Adrien le 06/10/2026).
+- Tarifs et abonnements : MÊME BLOC que Cerizay et La Châtaigneraie (retour 07/10/2026) : titre « TARIFS 2026 MONCOUTANT »,
+  * sur les tarifs avec justificatif + « * Justificatifs obligatoires », « Valables à… » sous « ABONNEMENTS 2026 »,
+  « (Places valables 1 an) » sous les formules. Affiche : `affiche_tarifs` = 1,06 pour que tout tienne.
+- Déclinaisons de l'orange (retour 07/10/2026, comme Cerizay/La Châtaigneraie) : les gris du gabarit prennent une teinte orange
+  (`declinaisons` : fond titre de fiche #FEF7F1, barre durée/pays #FCDDC4, alternance des lignes de grille #FBD3B3, aussi sur l'affiche).
+- Remerciements : logo Région Nouvelle-Aquitaine à la place de Poitou-Charentes Cinéma (`remplacer_logos`,
+  `STE logo region nouvelle-aquitaine.png`) ; logos réduits (`remerciements_echelle` 0,82) pour faire place au logo de Moncoutant.
 - Ciné-Kids : `outils/bloc_cinekids.py … --couleur "#F59042"` (programme 89,7 × 31,5 ; affiche colonne 121,4 × 121,0).
 - Affiche A3 (retour Adrien 06/10/2026, v03) : textes des grilles à corps FIXES (`affiche_corps_grille` : titre 8,6 · durée 6,6 ·
   horaires 9,5 · jours 8 · dates 10 · cases fusionnées 8 pt), lignes de 20 pt pour toutes les semaines (`affiche_h_ligne`),
@@ -232,6 +238,9 @@ ne plus toucher à `cinemas/stella.json`, `moteur/*.py`, `outils/logo_cinema.py`
 contrôle `verif_maquette.py verifier` obligatoire avant chaque livraison (« identique à la référence validée »).
 
 Journal :
+- 07/10/2026 (programme v04 / affiche v05) : moteur re-synchronisé sur le 7e Art v18/v11 (déclinaisons, remplacer_logos,
+  cadrage_affiche, coup de cœur, picto malentendants, légende par codes possibles) puis patchs Stella ré-appliqués
+  (séances r en rouge, 10 lignes max, corps fixes de l'affiche) ; tarifs format Cerizay, déclinaisons orange, logo Région.
 - 06/10/2026 : création du kit Stella à partir du 7e Art (v16/v09) ; séances 4,50 € en rouge ; 10 lignes de grille max.
 - 06/10/2026 (affiche v03) : textes des grilles de l'affiche agrandis (corps fixes, `affiche_corps_grille`, `affiche_h_ligne` 20, bas 338 mm).
 - 06/10/2026 (v02) : 4 fiches en semaine 3 grâce à `"h_ligne": 17` (semaine à 9 lignes) + résumés de 2 lignes ; films Ciné-Kids sans fiche = OK (programme Ciné-Kids dédié).

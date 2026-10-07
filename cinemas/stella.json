@@ -21,14 +21,18 @@
  ],
  "tarifs": [
   {
-   "titre": "TARIFS 2026"
+   "titre": "TARIFS 2026 MONCOUTANT"
   },
   {
-   "ligne": "-14 ans & Courts-métrages",
+   "ligne": "Moins de 14 ans *",
    "prix": "4,50"
   },
   {
-   "ligne": "Moins de 25 ans et étudiants",
+   "ligne": "Courts-métrages",
+   "prix": "4,50"
+  },
+  {
+   "ligne": "Moins de 25 ans et étudiants *",
    "prix": "6,20"
   },
   {
@@ -36,11 +40,14 @@
    "prix": "7,60"
   },
   {
-   "ligne": "Réduit",
+   "ligne": "Réduit *",
    "prix": "6,60"
   },
   {
-   "sous": "POUR TOUS les mercredis (hors fériés)"
+   "sous": "Pour tous le mercredi (hors fériés)"
+  },
+  {
+   "sous": "Plus de 60 ans, du lundi au vendredi (hors fériés)"
   },
   {
    "sous": "Carte Demandeur d’emploi"
@@ -55,13 +62,10 @@
    "sous": "Personnes à mobilité réduite"
   },
   {
-   "sous": "Plus de 60 ans (lun. au ven., hors fériés)"
+   "note": "* Justificatifs obligatoires"
   },
   {
-   "note": "Justificatifs obligatoires"
-  },
-  {
-   "note": "Contremarques : Cinéchèques, ANCV, CCU, Fleury Michon"
+   "note": "Cinéchèques, ANCV, CCU et Fleury Michon acceptés"
   }
  ],
  "abonnements": [
@@ -69,7 +73,7 @@
    "titre": "ABONNEMENTS 2026"
   },
   {
-   "note": "(Places valables 1 an)"
+   "texte": "Valables à Bressuire, Argentonnay, Cerizay, Moncoutant, La Châtaigneraie, La Tranche-sur-Mer, Jard-sur-Mer et Talmont-Saint-Hilaire."
   },
   {
    "ligne": "5 places",
@@ -91,6 +95,9 @@
    "prix": "45,00"
   },
   {
+   "note": "(Places valables 1 an)"
+  },
+  {
    "note": "Abonnements non nominatifs valables à toutes les séances (sauf séances spéciales et spectacles)"
   },
   {
@@ -101,9 +108,6 @@
   },
   {
    "centre": "en moins de 6 mois !"
-  },
-  {
-   "texte": "Valables à Bressuire, Argentonnay, Cerizay, Moncoutant, La Châtaigneraie, La Tranche-sur-Mer, Jard-sur-Mer et Talmont-Saint-Hilaire."
   }
  ],
  "partenaires_en_plus": [
@@ -165,9 +169,9 @@
  "dossier_assemblage_mac": "",
  "fauteuil_affiche": "STE fauteuil orange.png",
  "affiche_bas_grilles": 338.0,
- "affiche_tarifs": 1.12,
+ "affiche_tarifs": 1.06,
  "remerciements_pleine_largeur": true,
- "remerciements_echelle": 0.95,
+ "remerciements_echelle": 0.82,
  "affiche_disposition": "colonnes",
  "affiche_largeur_grilles": 152,
  "bandeau_bas_corps": 9.6,
@@ -182,5 +186,13 @@
   "jours": 8.0,
   "dates": 10.0,
   "fusion": 8.0
+ },
+ "declinaisons": {
+  "R=245 V=243 B=244": "#FEF7F1",
+  "R=211 V=211 B=211": "#FBD3B3",
+  "C=32 M=25 J=27 N=7": "#FCDDC4"
+ },
+ "remplacer_logos": {
+  "poitou-charentes-cinema.jpg": "STE logo region nouvelle-aquitaine.png"
  }
 }
