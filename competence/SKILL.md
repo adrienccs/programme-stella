@@ -39,7 +39,7 @@ Ensuite la mise en page doit être IDENTIQUE d'un mois à l'autre ; seul le cont
   « Avant-première » (`fusion` {de, a}) sur les jours vides avant la séance. Signaler à Adrien toute incohérence de l'original
   (titres mal orthographiés, ex. « Docubo » → Ducobu ; durées différentes des autres cinémas : la grille du Stella fait foi).
 - Tarifs et abonnements = ceux de Cerizay (déjà dans `cinemas/stella.json`).
-- Film inconnu (ex. Ciné-Ado sans titre) : fiche + ligne de grille + bandeau « Film en attente ».
+- Film pas encore connu (ex. Ciné-Ado) : jamais « en attente » → « film surprise » brodé (visuel, fiche, grille, bandeau), cf. PROCEDURE.md.
 - Films déjà traités au 7e Art le même mois : on peut COPIER (jamais modifier) ses fiches/affiches depuis
   `adrienccs/programme-7emeArt` (clone en lecture), en renommant le préfixe 7EA → STE.
 - **TMDB automatique** : écrire `mois/stella-AAAA-MM/films.txt`, committer, pousser ; si l'Action ne part pas :

@@ -65,7 +65,7 @@
    "note": "* Justificatifs obligatoires"
   },
   {
-   "note": "Cinéchèques, ANCV, CCU et Fleury Michon acceptés"
+   "note": "Cinéchèques, ANCV et CCU acceptés"
   }
  ],
  "abonnements": [
@@ -169,7 +169,7 @@
  "dossier_assemblage_mac": "",
  "fauteuil_affiche": "STE fauteuil orange.png",
  "affiche_bas_grilles": 338.0,
- "affiche_tarifs": 1.06,
+ "affiche_tarifs": 0.97,
  "remerciements_pleine_largeur": true,
  "remerciements_echelle": 0.82,
  "affiche_disposition": "colonnes",

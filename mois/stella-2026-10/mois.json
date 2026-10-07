@@ -220,16 +220,16 @@
    "resume": "À Halloween, le Fermier saccage les citrouilles du troupeau. Shaun joue les savants fous… mais le Fermier disparaît et une bête rôde dans les bois !"
   },
   "cineado": {
-   "titre": "Ciné-Ado : film en attente",
+   "titre": "Ciné-Ado : film surprise",
    "duree": "1h30",
-   "pays": "",
-   "realisateur": "(en attente)",
-   "sortie": "(en attente)",
+   "pays": "surprise !",
+   "realisateur": "un mystère",
+   "sortie": "secret bien gardé",
    "avec": null,
-   "genre": "(en attente)",
-   "affiche": "STE cine ado en attente.jpg",
-   "grille": "Film en attente",
-   "resume": "Film en attente : le titre de cette séance Ciné-Ado sera annoncé prochainement."
+   "genre": "à découvrir entre potes",
+   "affiche": "STE cine ado film surprise.jpg",
+   "grille": "Film surprise",
+   "resume": "Les vacances, c’est aussi pour les ados ! Le Stella vous réserve une séance surprise : le film sera dévoilé très bientôt. Venez entre amis !"
   },
   "gruffalo": {
    "titre": "Gruffalo, de père en fils",
@@ -900,8 +900,8 @@
   {
    "image": "STE bandeau cine ado.jpg",
    "surtitre": "Ciné-Ado",
-   "titre": "Film en attente",
-   "ligne": "Titre annoncé prochainement",
+   "titre": "Film surprise",
+   "ligne": "Le film sera dévoilé très bientôt… venez entre potes !",
    "ligne_grasse": "Séance à 4,50 €",
    "date": {
     "jour": "Vendredi",

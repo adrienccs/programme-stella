@@ -154,8 +154,9 @@ Différences propres au Stella :
   (sinon « fiches serrées » et chevauchement des textes). Priorités des fiches : films qui ne passent qu'une semaine,
   gros films, film en attente (Ciné-Ado) ; les avant-premières jeunesse/courts n'ont pas de fiche si la place manque
   (le moteur l'affiche en ATTENTION : à signaler à Adrien).
-- Film non connu (ex. Ciné-Ado sans titre) : fiche « Ciné-Ado : film en attente » (affiche provisoire générée,
-  champs « (en attente) ») + ligne de grille « Film en attente · Ciné-Ado » + bandeau événement « Film en attente ».
+- Film pas encore connu (ex. Ciné-Ado) : JAMAIS « en attente » (retour 07/10/2026) → on brode : « Ciné-Ado : film surprise »,
+  visuel « STE cine ado film surprise.jpg » (point d'interrogation orange, projecteurs, confettis), fiche au ton ado,
+  ligne de grille « Film surprise · Ciné-Ado », bandeau « Film surprise — dévoilé très bientôt ». Remplacer dès que le titre arrive.
 - Logo : `outils/logo_cinema.py "Le Stella" "Moncoutant-sur-Sèvre" "#F59042" "assets/cinemas/stella/STE logo le stella"`.
 - Fauteuil : `STE fauteuil orange.png` (fauteuil rouge du 7e Art recoloré en orange).
 - Partenaires : ceux du 7e Art, logo ville de Cerizay remplacé par celui de Moncoutant-sur-Sèvre (`STE logo ville moncoutant.png`).
@@ -163,7 +164,9 @@ Différences propres au Stella :
 - Site du bandeau bas : cinemalestella.com. Mention : Cinéma géré et animé par la SCIC Cinémas Bocage.
 - Tarifs et abonnements : MÊME BLOC que Cerizay et La Châtaigneraie (retour 07/10/2026) : titre « TARIFS 2026 MONCOUTANT »,
   * sur les tarifs avec justificatif + « * Justificatifs obligatoires », « Valables à… » sous « ABONNEMENTS 2026 »,
-  « (Places valables 1 an) » sous les formules. Affiche : `affiche_tarifs` = 1,06 pour que tout tienne.
+  « (Places valables 1 an) » sous les formules. Contremarques : « Cinéchèques, ANCV et CCU acceptés » (PAS Fleury Michon au Stella).
+  Affiche : `affiche_tarifs` = 0,97 (débordement à partir de 1,08 dans l'aperçu → garder ≈ 4 mm de marge, InDesign compose
+  un peu plus haut que l'aperçu).
 - Déclinaisons de l'orange (retour 07/10/2026, comme Cerizay/La Châtaigneraie) : les gris du gabarit prennent une teinte orange
   (`declinaisons` : fond titre de fiche #FEF7F1, barre durée/pays #FCDDC4, alternance des lignes de grille #FBD3B3, aussi sur l'affiche).
 - Remerciements : logo Région Nouvelle-Aquitaine à la place de Poitou-Charentes Cinéma (`remplacer_logos`,
@@ -238,6 +241,7 @@ ne plus toucher à `cinemas/stella.json`, `moteur/*.py`, `outils/logo_cinema.py`
 contrôle `verif_maquette.py verifier` obligatoire avant chaque livraison (« identique à la référence validée »).
 
 Journal :
+- 07/10/2026 (programme v05 / affiche v06) : contremarques sans Fleury Michon ; tarifs affiche 0,97 ; Ciné-Ado « film surprise ».
 - 07/10/2026 (programme v04 / affiche v05) : moteur re-synchronisé sur le 7e Art v18/v11 (déclinaisons, remplacer_logos,
   cadrage_affiche, coup de cœur, picto malentendants, légende par codes possibles) puis patchs Stella ré-appliqués
   (séances r en rouge, 10 lignes max, corps fixes de l'affiche) ; tarifs format Cerizay, déclinaisons orange, logo Région.
