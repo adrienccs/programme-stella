@@ -157,6 +157,9 @@ Différences propres au Stella :
 - Film pas encore connu (ex. Ciné-Ado) : JAMAIS « en attente » (retour 07/10/2026) → on brode : « Ciné-Ado : film surprise »,
   visuel « STE cine ado film surprise.jpg » (point d'interrogation orange, projecteurs, confettis), fiche au ton ado,
   ligne de grille « Film surprise · Ciné-Ado », bandeau « Film surprise — dévoilé très bientôt ». Remplacer dès que le titre arrive.
+- Affiche de film au format 2:3 dont le titre est coupé (cadres 3:4 → ~6 % rognés en haut et en bas) : créer
+  « STE <film> entiere.jpg » = affiche élargie à 0,76 de ratio avec ses bords prolongés en flou assombri, puis
+  `"affiche"` + `"cadrage_affiche": [0.5, 0.5]` dans le film (et dans `couverture.affiches`). Ex. Heart of the Beast (07/10/2026).
 - Logo : `outils/logo_cinema.py "Le Stella" "Moncoutant-sur-Sèvre" "#F59042" "assets/cinemas/stella/STE logo le stella"`.
 - Fauteuil : `STE fauteuil orange.png` (fauteuil rouge du 7e Art recoloré en orange).
 - Partenaires : ceux du 7e Art, logo ville de Cerizay remplacé par celui de Moncoutant-sur-Sèvre (`STE logo ville moncoutant.png`).
@@ -241,6 +244,7 @@ ne plus toucher à `cinemas/stella.json`, `moteur/*.py`, `outils/logo_cinema.py`
 contrôle `verif_maquette.py verifier` obligatoire avant chaque livraison (« identique à la référence validée »).
 
 Journal :
+- 07/10/2026 (programme v06 / affiche v07) : affiche Heart of the Beast entière (titre coupé).
 - 07/10/2026 (programme v05 / affiche v06) : contremarques sans Fleury Michon ; tarifs affiche 0,97 ; Ciné-Ado « film surprise ».
 - 07/10/2026 (programme v04 / affiche v05) : moteur re-synchronisé sur le 7e Art v18/v11 (déclinaisons, remplacer_logos,
   cadrage_affiche, coup de cœur, picto malentendants, légende par codes possibles) puis patchs Stella ré-appliqués

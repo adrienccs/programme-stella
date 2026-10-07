@@ -182,8 +182,12 @@
    "sortie": "23 septembre 2026",
    "avec": "Brad Pitt, J.K. Simmons, Anna Lambe",
    "genre": "Aventure, thriller",
-   "affiche": "STE heart of the beast.jpg",
-   "resume": "Après un crash d’avion, un ancien des forces spéciales se retrouve perdu au cœur de l’Alaska avec son fidèle chien Odin. Ensemble, ils devront tout faire pour survivre."
+   "affiche": "STE heart of the beast entiere.jpg",
+   "resume": "Après un crash d’avion, un ancien des forces spéciales se retrouve perdu au cœur de l’Alaska avec son fidèle chien Odin. Ensemble, ils devront tout faire pour survivre.",
+   "cadrage_affiche": [
+    0.5,
+    0.5
+   ]
   },
   "salut": {
    "titre": "Notre salut",
@@ -917,7 +921,7 @@
    "STE les miserables.jpg",
    "STE la maison de nos reves.jpg",
    "STE shaun le mouton la beeete d halloween.jpg",
-   "STE heart of the beast.jpg",
+   "STE heart of the beast entiere.jpg",
    "STE ducobu et le fantome de saint potache.jpg",
    "STE mochy.jpg"
   ],
