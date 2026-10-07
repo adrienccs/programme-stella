@@ -22,6 +22,7 @@ import sys, os, json, shutil, copy, zipfile, urllib.parse, argparse, re, glob
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from idmllib import *
 import grid
+import adapt
 from PIL import Image
 
 ap_ = argparse.ArgumentParser()
@@ -75,8 +76,13 @@ def find_img(name):
     raise SystemExit(f'IMAGE MANQUANTE : {name}')
 
 
-def img(rect, fname, mode='fill', align=(0.5, 0.5)):
+def img(rect, fname, mode='fill', align=(0.5, 0.5), affiche=False):
     p = find_img(fname)
+    if affiche:                          # affiche de film : adaptée au format du cadre, sans rien couper (méthode D)
+        _r = E(rect) if isinstance(rect, str) else rect
+        _x0, _y0, _x1, _y1 = d.inner_bounds(_r)
+        fname = adapt.adapte(p, (_x1 - _x0) / (_y1 - _y0), WARN)
+        p = find_img(fname)
     w, h = Image.open(p).size
     USED.add(p)
     ext = 'png' if fname.lower().endswith('.png') else 'jpg'
@@ -179,7 +185,7 @@ for k, fname in enumerate(aff):
     r = take(COVER[k])
     _cad = next((tuple(f_['cadrage_affiche']) for f_ in MOIS['films'].values()
                  if f_.get('affiche') == fname and f_.get('cadrage_affiche')), (0.5, 0.0))
-    img(r, fname, 'fill', _cad)
+    img(r, fname, 'fill', _cad, affiche=True)
     x0, y0, x1, y1 = d.bbox(r)
     s = POST_H / (y1 - y0)
     r.set('ItemTransform', fmt(mul([s, 0, 0, s, 0, 0], M(r.get('ItemTransform')))))

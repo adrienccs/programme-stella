@@ -21,6 +21,7 @@ import sys, os, json, shutil, copy, zipfile, urllib.parse, argparse, re, glob
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from idmllib import *
 import grid
+import adapt
 from PIL import Image
 
 ap_ = argparse.ArgumentParser()
@@ -66,8 +67,13 @@ def find_img(name):
     raise SystemExit(f'IMAGE MANQUANTE : {name}')
 
 
-def img(rect, fname, mode='fill', align=(0.5, 0.5)):
+def img(rect, fname, mode='fill', align=(0.5, 0.5), affiche=False):
     p = find_img(fname)
+    if affiche:                          # affiche de film : adaptée au format du cadre, sans rien couper (méthode D)
+        _r = E(rect) if isinstance(rect, str) else rect
+        _x0, _y0, _x1, _y1 = d.inner_bounds(_r)
+        fname = adapt.adapte(p, (_x1 - _x0) / (_y1 - _y0), WARN)
+        p = find_img(fname)
     w, h = Image.open(p).size
     USED.add(p)
     ext = 'png' if fname.lower().endswith('.png') else 'jpg'
@@ -196,7 +202,7 @@ def make_fiche(key, x0, y0, sp, pitch, X1):
     ph = min(PH, pitch - 3.0)               # même taille d'affiche dans tous les volets
     bx0, by0, _, _ = d.bbox(po)
     d.set_bounds(po, bx0, by0, bx0 + ph * 0.75, by0 + ph)
-    img(po.get('Self'), f['affiche'], 'fill', tuple(f.get('cadrage_affiche', (0.5, 0.0))))   # « cadrage_affiche » : [x, y] (1.0 = bas)
+    img(po.get('Self'), f['affiche'], 'fill', tuple(f.get('cadrage_affiche', (0.5, 0.0))), affiche=True)   # « cadrage_affiche » : [x, y] (1.0 = bas)
     cx0, cy0, cx1, cy1 = d.bbox(co)
     qx0, qy0, qx1, qy1 = d.bbox(pi)
     d.set_bounds(co, cx0, cy0, cx0 + 31, cy1)
@@ -859,7 +865,7 @@ for k, (rid, s, top, xc) in enumerate(COVER_RECTS):
         continue
     _cad = next((tuple(f_['cadrage_affiche']) for f_ in MOIS['films'].values()
                  if f_.get('affiche') == aff[k] and f_.get('cadrage_affiche')), (0.5, 0.0))
-    img(rid, aff[k], 'fill', _cad)
+    img(rid, aff[k], 'fill', _cad, affiche=True)
     r = E(rid)
     x0, y0, x1, y1 = d.bbox(r)
     cx = (x0 + x1) / 2 if xc is None else xc

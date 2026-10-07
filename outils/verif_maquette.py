@@ -29,7 +29,7 @@ VARIABLES = {
                 'ud24f', 'ud109', 'ubdf0', 'ud0e9', 'uc37d', 'uc380', 'uc89e', 'uc8b5', 'uc8c1', 'uc8cd'},
 }
 REGLAGES = ['cinemas/stella.json', 'moteur/programme.py', 'moteur/affiche.py', 'moteur/grid.py', 'moteur/idmllib.py',
-            'moteur/assembler.py', 'outils/logo_cinema.py', 'outils/bloc_cinekids.py']
+            'moteur/assembler.py', 'moteur/adapt.py', 'outils/logo_cinema.py', 'outils/bloc_cinekids.py']
 
 
 def empreinte_reglages():

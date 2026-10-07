@@ -30,6 +30,16 @@ kit/
 Côté Mac, les liens pointent vers `dossier_liens_mac` (fiche cinéma) : on dépose l'IDML et le contenu
 de `Links` dans ce dossier → tout se relie seul. Sinon : panneau Liens → « Relier à un dossier ».
 
+## Affiches de films : jamais coupées (depuis le 07/10/2026)
+
+Les affiches de films (fiches, couverture, affiche A3) sont adaptées automatiquement au format de leur cadre par
+`moteur/adapt.py` (même module que les autres cinémas) : dès que le format diffère (> 0,5 %), « méthode D » validée
+par Adrien — affiche ENTIÈRE, les bandes manquantes complétées en prolongeant ses propres bords, floutés ; jamais de
+déformation ni de recadrage. Au-delà de 5 % d'écart (affiches TMDB en 2:3), le moteur affiche
+`ATTENTION : Affiche « … » complétée` → le signaler à Adrien (remplissage génératif Photoshop possible).
+Les fichiers « <nom> [cadre 0750].jpg » sont créés dans `images/` du mois : les committer.
+(`cadrage_affiche` n'a plus d'effet visible : l'affiche entière tient dans le cadre.)
+
 ## Dépôt
 
 Tout le kit vit dans le dépôt GitHub **privé** `adrienccs/programme-stella` (Le Stella uniquement).
