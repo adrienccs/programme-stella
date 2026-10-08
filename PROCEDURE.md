@@ -272,3 +272,4 @@ Journal :
 - 06/10/2026 (v02) : 4 fiches en semaine 3 grâce à `"h_ligne": 17` (semaine à 9 lignes) + résumés de 2 lignes ; films Ciné-Kids sans fiche = OK (programme Ciné-Kids dédié).
 - 08/10/2026 (programme v09 / affiche v10) : bas arrondis des grilles — les coins carrés des cellules de la dernière ligne dépassaient de l'arrondi → `round_bottom` ajoute 2 caches blancs en forme de coin courbe sous le filet (comme le 7e Art et le Fauteuil Rouge), programme et affiche. Rien d'autre.
 - 08/10/2026 : tarifs — ligne « Cinéchèques, ANCV, CCU, Fleury Michon et RECIF acceptés » (demande d'Adrien, harmonisée avec Cerizay et Bressuire) ; s'applique à partir du prochain programme. Bloc tarifs contrôlé : tient (2 lignes), aucun débordement.
+- 08/10/2026 : ligne des contremarques placée en DERNIER dans le bloc tarifs (valable pour tous les tarifs, demande d'Adrien).
