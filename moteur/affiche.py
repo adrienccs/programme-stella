@@ -35,7 +35,7 @@ A = ap_.parse_args()
 
 CIN = json.load(open(A.cinema, encoding='utf-8'))
 sys.path.insert(0, os.path.abspath(A.kit))
-from commun import seances, bandeau          # code des séances + bandeau du réseau (programme-commun, 08/10/2026)
+from commun import seances, bandeau, legende          # code des séances + bandeau du réseau (programme-commun, 08/10/2026)
 CIN = seances.appliquer(CIN)
 MOIS = json.load(open(A.mois, encoding='utf-8'))
 IMG_DIRS = [A.images, os.path.join(A.kit, 'assets', 'cinemas', CIN['id']),
@@ -218,13 +218,11 @@ RX0, RX1 = X1 - 155.0, X1                # grilles un peu moins larges (retour A
 SEMAINE = bool(MOIS.get('semaines'))          # 7e Art : 1 grille par SEMAINE, 6 à 8 films chacune
 
 
-def legende_mois():
-    """légende de l'affiche : codes du réseau présents dans AU MOINS une semaine du mois (programme-commun)"""
-    return seances.lignes_legende(seances.codes_utilises(MOIS.get('semaines') or MOIS.get('weekends', []) or MOIS.get('lignes', []),
-                                                         films=MOIS.get('films')), car_par_ligne=130)
+LEG_CODES = seances.codes_utilises(MOIS.get('semaines') or MOIS.get('weekends', []), films=MOIS.get('films'))
+LEG_K = 1.5                                     # légende du réseau à l'échelle de l'affiche (6 pt × 1,5 = 9 pt)
+LEG_HB = legende.hauteur(LEG_CODES, LEG_K, colonnes=4)   # hauteur du bloc (0 si aucun code), 4 colonnes sur l'affiche
 
 
-LEG_LINES = len(legende_mois() or [])
 WE = MOIS.get('semaines') or MOIS['weekends']
 H_FILM_PT = float(CIN.get('h_ligne_grille', 22.0))
 
@@ -286,7 +284,7 @@ if COLONNES:
     PRO = MOIS.get('prochainement', [])[:3]
     GW = float(CIN.get('affiche_largeur_grilles', 170.0))
     RX0, RX1 = X1 - GW, X1
-    LEG_H = (1.2 + LEG_LINES * 11 * 25.4 / 72) if LEG_LINES else 0.0
+    LEG_H = (LEG_HB + 0.2) if LEG_HB else 0.0
     GRID_B = BODY_B - LEG_H - 1.5
     COLS_G = [(RX0, RX1, WE)]
     _base = sum((grid.H_DAYS + len(w['films']) * hf(w)) * 25.4 / 72 for w in WE)
@@ -300,7 +298,7 @@ elif SEMAINE:
     VED_H, EV_H2, VED_ZOOM = 36.0, 26.0, 1.7    # événement vedette (ex. Ciné-Kids) pleine largeur, autres dessous
     _ved = any(e.get('vedette_affiche') for e in PRO)
     PRO_T = (BODY_B - (9.6 + (VED_H + 3.0 + EV_H2 if _ved else EV_H) + 2.2)) if PRO else BODY_B
-    LEG_H = (0.2 + LEG_LINES * 11 * 25.4 / 72) if LEG_LINES else 0.0
+    LEG_H = (LEG_HB - 0.8) if LEG_HB else 0.0
     GRID_B = PRO_T - 4.0 - LEG_H
     MID = (X0 + X1) / 2
     COLS_G = [(X0, MID - 3.0, WE[:2]), (MID + 3.0, X1, WE[2:4])]
@@ -430,6 +428,15 @@ def label_dates(we):                 # « semaine du 14 au 20 octobre » → « 
     return re.sub(r'^(semaine|week-end)\s+', '', t, flags=re.I).upper()
 
 
+
+def _place_aff_tot(el):
+    el.getparent().remove(el)
+    d.spreads[SP1].getroot().find('Spread').append(el)
+    KEEP.add(el.get('Self'))
+
+
+LO = legende.Outils(d, story_of, img, _place_aff_tot, lambda f: Image.open(find_img(f)).size, etree)
+
 def one_grid(we, gx0_, gx1_, y):
     gw = gw_of(we)
     if TITRES_SEMAINE:
@@ -449,21 +456,17 @@ def one_grid(we, gx0_, gx1_, y):
     d.set_bounds(g, gx0, gy0, gx0 + (gx1_ - gx0_) + 0.5, gy0 + h + 7)
     d.move(g, gx0_ - gx0, y - gy0)
     round_bottom(gx0_, gx1_, y + h, K, hf(we))
-    # picto « malentendants » en bas à droite de la case titre (comme le programme)
+    # pictos du réseau à droite du titre (en bas de la case titre) — programme-commun
     _dw = float(CIN.get('affiche_largeur_jour', 22.0))
     _tw = ((gx1_ - gx0_) * PT / K - 7 * _dw) * K / PT
     _films = list(we['films']) if CIN.get('ordre_grille') == 'saisie' else sorted(we['films'], key=_premiere)
     for _ri, _e in enumerate(_films):
-        _o = _e[2] if isinstance(_e, (list, tuple)) and len(_e) > 2 else {}
-        if _o.get('malentendants'):
-            _ph = 3.0 * K * 1.4
-            _yb = y + (grid.H_DAYS + (_ri + 1) * hf(we)) * K / PT - 0.8 * K
-            _xr = gx0_ + _tw - 1.0 * K
-            _r = take('ubdf0', dup=True)
-            _p = _r.getparent(); _p.remove(_r); _p.append(_r)          # premier plan (au-dessus de la grille)
-            d.set_bounds(_r, _xr - _ph, _yb - _ph, _xr, _yb)
-            _r.set('FillColor', 'Swatch/None'); _r.set('StrokeWeight', '0')
-            img(_r.get('Self'), CIN.get('picto_malentendants', '7EA picto malentendants.png'), 'fit')
+        _k, _s, _o = (_e['film'], _e.get('seances', {}), _e) if isinstance(_e, dict) else \
+            (_e[0], _e[1], _e[2] if len(_e) > 2 else {})
+        _pl = seances.pictos_titre(MOIS['films'][_k], _o, _s)
+        if _pl:
+            legende.poser_pictos_titre(LO, gx0_ + _tw - 1.0 * K, y + (grid.H_DAYS + (_ri + 1) * hf(we)) * K / PT - 0.8 * K,
+                                       _pl, k=K)
     return y + h
 
 
@@ -481,55 +484,16 @@ else:
         y = one_grid(we, RX0, RX1, y) + WE_GAP
     GRID_END = y - WE_GAP
 
-LEGENDE = legende_mois()
-if SEMAINE and LEGENDE:                          # légende unique sous les grilles, lignes centrées
-    if isinstance(LEGENDE, str):
-        LEGENDE = [[[LEGENDE, '']]]
-    lg = take('ubedb', dup=True)
-    lg.set('FillColor', 'Swatch/None')
+def _place_aff(el):                               # copie du gabarit ramenée au premier plan de l'affiche
+    el.getparent().remove(el)
+    d.spreads[SP1].getroot().find('Spread').append(el)
+    KEEP.add(el.get('Self'))
+
+
+LO = legende.Outils(d, story_of, img, _place_aff, lambda f: Image.open(find_img(f)).size, etree)
+if SEMAINE and LEG_CODES:                        # légende du réseau sous les grilles (programme-commun)
     _lgx = (RX0, RX1) if COLONNES else (X0, X1)
-    d.set_bounds(lg, _lgx[0], GRID_END + 1.5, _lgx[1], GRID_END + 1.5 + LEG_H)
-    st = d.story(story_of(lg)).getroot()
-    psr = st.find('Story/ParagraphStyleRange')
-    for extra in st.find('Story').findall('ParagraphStyleRange')[1:]:
-        extra.getparent().remove(extra)
-    psr.set('Justification', 'CenterAlign'); psr.set('LeftIndent', '0')
-    tpl = copy.deepcopy(psr.find('CharacterStyleRange'))
-    for c_ in psr.findall('CharacterStyleRange'):
-        psr.remove(c_)
-    for x in list(tpl):
-        if x.tag in ('Content', 'Br'):
-            tpl.remove(x)
-    tpl.set('PointSize', '9'); tpl.set('FillColor', 'Color/Black'); tpl.set('FontStyle', '67 Medium Condensed')
-    tpl.set('HorizontalScale', '100'); tpl.set('Tracking', '0')
-    pr = tpl.find('Properties')
-    if pr is None:
-        pr = etree.SubElement(tpl, 'Properties')
-    af = pr.find('AppliedFont')
-    if af is None:
-        af = etree.SubElement(pr, 'AppliedFont'); af.set('type', 'string')
-    af.text = 'Helvetica Neue (OTF)'
-    ld = pr.find('Leading')
-    if ld is None:
-        ld = etree.SubElement(pr, 'Leading'); ld.set('type', 'unit')
-    ld.text = '11'
-    for li, ligne in enumerate(LEGENDE):
-        for si, (txt, sty) in enumerate(ligne):
-            c_ = copy.deepcopy(tpl)
-            if 'r' in sty: c_.set('FillColor', grid.ROUGE or BLUE)
-            if 'v' in sty: c_.set('FillColor', 'Color/Grille violet')
-            if 'b' in sty: c_.set('FillColor', 'Color/Grille bleu')
-            if 's' in sty: c_.set('Underline', 'true'); c_.set('UnderlineOffset', '1.6'); c_.set('UnderlineWeight', '0.7')
-            if 'i' in sty: c_.set('Skew', '12')
-            if sty: c_.set('FontStyle', '77 Bold Condensed')
-            if 'z' in sty:                       # ♥ coup de cœur (Zapf Dingbats)
-                grid.set_font(c_, 'Zapf Dingbats', 'Regular')
-            last = si == len(ligne) - 1
-            etree.SubElement(c_, 'Content').text = txt + ('\u2028' if last and li < len(LEGENDE) - 1 else '')
-            psr.append(c_)
-    tfp = lg.find('TextFramePreference')
-    if tfp is not None:
-        tfp.set('VerticalJustification', 'TopAlign')
+    legende.poser(LO, _lgx[0], _lgx[1], GRID_END + 1.5, LEG_CODES, k=LEG_K, colonnes=4)
 
 # =====================================================================
 # 3. colonne gauche : événement spécial + prochainement

@@ -270,16 +270,7 @@ def build_one(d, story_id, we, total_w_pt, h_film=18.0, split=None, day_w=22.0):
             x.set('PointSize', '8' if _titre else '7')
             if chasse is not None and _titre and chasse < 1.0:
                 x.set('HorizontalScale', str(round(chasse * 100, 1)))   # titre resserré pour tenir sur sa ligne
-        if opts.get('coeur'):                            # coup de cœur : ♥ (Zapf Dingbats) couleur du cinéma après le titre
-            _c0 = list(c.iter('CharacterStyleRange'))[0]
-            _h = copy.deepcopy(_c0)
-            for x in list(_h):
-                if x.tag in ('Content', 'Br'):
-                    _h.remove(x)
-            set_font(_h, 'Zapf Dingbats', 'Regular')
-            _h.set('FillColor', RES.COEUR); _h.set('PointSize', '7'); _h.set('Skew', '0')
-            etree.SubElement(_h, 'Content').text = '\u00a0\u2665'
-            _c0.addnext(_h)
+        # ♥ coup de cœur : picto du réseau posé à droite du titre par le moteur (programme-commun)
         fus = opts.get('fusion')
         gris = set(opts.get('gris', [])) | fermes
         i = 0

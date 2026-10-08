@@ -34,7 +34,7 @@ A = ap_.parse_args()
 
 CIN = json.load(open(A.cinema, encoding='utf-8'))
 sys.path.insert(0, os.path.abspath(A.kit))
-from commun import seances, bandeau          # code des séances + bandeau du réseau (programme-commun, 08/10/2026)
+from commun import seances, bandeau, legende          # code des séances + bandeau du réseau (programme-commun, 08/10/2026)
 CIN = seances.appliquer(CIN)
 MOIS = json.load(open(A.mois, encoding='utf-8'))
 IMG_DIRS = [A.images, os.path.join(A.kit, 'assets', 'cinemas', CIN['id']), os.path.join(A.kit, 'assets', 'communs')]
@@ -220,8 +220,8 @@ def _norm(e):                       # [clé, séances, options?] ou {"film", "se
 for _we in WEEKENDS:
     _we['films'] = [_norm(e) for e in _we['films']]
 # bas des grilles : la légende (2 ou 3 lignes selon la semaine la plus chargée) doit tenir au-dessus du massicot
-LEG_N = max((len(legende_semaine(w) or []) for w in WEEKENDS), default=0)
-GRID_BOTTOM = (202.0 - max(0, LEG_N - 2) * 1.5) if LEGENDE else 206.0   # 3 lignes : grilles remontées de 1,5 mm
+LEG_HMAX = max((legende.hauteur(codes_semaine(w)) for w in WEEKENDS), default=0.0)   # légende du réseau (bloc)
+GRID_BOTTOM = min(206.0, 208.3 - LEG_HMAX) if LEG_HMAX else 206.0   # bas de la légende ≤ 208 mm (comme avant)
 
 def _premiere(item):              # ordre de diffusion = 1re séance du week-end
     s = item[1]
@@ -342,69 +342,21 @@ for vi, we in enumerate(WEEKENDS):
     gx0, gy0, _, _ = d.bbox(g)
     d.set_bounds(g, gx0, gy0, gx0 + (x1 - x0) + 0.5, gy0 + h + 7)
     d.move(g, x0 - gx0, (GRID_BOTTOM + off - h) - gy0)
-    # picto « malentendants » (boucle magnétique, picto officiel du Fauteuil Rouge) en bas à droite de la case titre
+    # pictos du réseau à droite du titre (en bas de la case titre) — programme-commun
     _gt = GRID_BOTTOM + off - h
     _tw = ((x1 - x0) * PT - 7 * 22.0) / PT
+    LO = legende.Outils(d, story_of, img, lambda el, sp=sp: to_spread(el, sp), lambda f: Image.open(find_img(f)).size, etree)
     for _ri, (_k, _s, _o) in enumerate(films_grille):
-        if _o.get('malentendants'):
-            _ph = 3.0
-            _yb = _gt + (grid.H_DAYS + (_ri + 1) * hf(we)) / PT - 0.8
-            _xr = x0 + _tw - 1.0
-            _r = d.duplicate('ubdf0')
-            to_spread(_r, sp)
-            d.set_bounds(_r, _xr - _ph, _yb - _ph, _xr, _yb)
-            _r.set('FillColor', 'Swatch/None'); _r.set('StrokeWeight', '0')
-            img(_r.get('Self'), CIN.get('picto_malentendants', '7EA picto malentendants.png'), 'fit')
+        _pl = seances.pictos_titre(MOIS['films'][_k], _o, _s)
+        if _pl:
+            legende.poser_pictos_titre(LO, x0 + _tw - 1.0, _gt + (grid.H_DAYS + (_ri + 1) * hf(we)) / PT - 0.8, _pl)
 d.delete('ucf09')
 
-if LEGENDE:                                       # légende sous chaque grille, lignes coupées à la main
-    # LEGENDE = [[[texte, style], ...] par ligne] ; style : r rouge, s souligné, i italique, v violet, b bleu
-    if isinstance(LEGENDE, str):
-        LEGENDE = [[[LEGENDE, '']]]
-    for vi, we in enumerate(WEEKENDS):
-        x0, x1, sp, off = COLS[vi]
-        lg = d.duplicate('ubedb')
-        to_spread(lg, sp)
-        lg.set('FillColor', 'Swatch/None')
-        LEG_W = legende_semaine(we)
-        d.set_bounds(lg, x0, GRID_BOTTOM + off + 0.5, x1, GRID_BOTTOM + off + 0.5 + LEG_N * LEG_LEAD_MM + 0.1)
-        st = d.story(story_of(lg)).getroot()
-        psr = st.find('Story/ParagraphStyleRange')
-        for extra in st.find('Story').findall('ParagraphStyleRange')[1:]:
-            extra.getparent().remove(extra)
-        psr.set('Justification', 'CenterAlign'); psr.set('LeftIndent', '0')
-        tpl = copy.deepcopy(psr.find('CharacterStyleRange'))
-        for c in psr.findall('CharacterStyleRange'):
-            psr.remove(c)
-        for x in list(tpl):
-            if x.tag in ('Content', 'Br'):
-                tpl.remove(x)
-        tpl.set('PointSize', '6'); tpl.set('FillColor', 'Color/Black'); tpl.set('FontStyle', '67 Medium Condensed')
-        tpl.set('HorizontalScale', '100'); tpl.set('Tracking', '0')
-        pr = tpl.find('Properties')
-        if pr is None:
-            pr = etree.SubElement(tpl, 'Properties')
-        af = pr.find('AppliedFont')
-        if af is None:
-            af = etree.SubElement(pr, 'AppliedFont'); af.set('type', 'string')
-        af.text = 'Helvetica Neue (OTF)'
-        ld = pr.find('Leading')
-        if ld is None:
-            ld = etree.SubElement(pr, 'Leading'); ld.set('type', 'unit')
-        ld.text = '6.5'
-        for li, ligne in enumerate(LEG_W):
-            for si, (txt, sty) in enumerate(ligne):
-                c = copy.deepcopy(tpl)
-                if sty.startswith('p:'):          # picto image : pas dessiné dans ce moteur → texte seul
-                    WARN.append(f"picto « {sty[2:]} » utilisé : pas encore dessiné dans les grilles de ce cinéma")
-                    continue
-                seances.style_run(c, sty, BLUE, grid.set_font)
-                last = si == len(ligne) - 1
-                etree.SubElement(c, 'Content').text = txt + ('\u2028' if last and li < len(LEG_W) - 1 else '')
-                psr.append(c)
-        tfp = lg.find('TextFramePreference')
-        if tfp is not None:
-            tfp.set('VerticalJustification', 'TopAlign')
+# légende du réseau sous chaque grille : bloc 3 colonnes, codes présents dans la semaine (programme-commun)
+for vi, we in enumerate(WEEKENDS):
+    x0, x1, sp, off = COLS[vi]
+    LO = legende.Outils(d, story_of, img, lambda el, sp=sp: to_spread(el, sp), lambda f: Image.open(find_img(f)).size, etree)
+    legende.poser(LO, x0, x1, GRID_BOTTOM + off + 0.5, codes_semaine(we))
 
 
 # bas arrondi des grilles

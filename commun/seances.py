@@ -72,8 +72,11 @@ def codes_utilises(*objets, films=None):
             u.add('coeur')
         if f.get('derniere'):
             u.add('sablier')
+        if f.get('malentendants'):
+            u.add('bim')
         for p in f.get('pictos', []) or []:
-            u.add(PICTOS.get(str(p), {}).get('groupe', str(p)))
+            p = CODES['anciens_pictos'].get(str(p), str(p))
+            u.add(PICTOS.get(p, {}).get('style') or PICTOS.get(p, {}).get('groupe', p))
 
     def walk(o):
         if isinstance(o, dict):
@@ -97,6 +100,41 @@ def codes_utilises(*objets, films=None):
     return {c for c in u if c in STYLES or c in PICTOS or c == 'age'}
 
 
+ORDRE_PICTOS = list(PICTOS)                    # de gauche à droite à côté du titre
+
+
+def picto_fichier(p):
+    return PICTOS[p]['fichier']
+
+
+def picto_hauteur(p):
+    return PICTOS[p].get('hauteur', CODES['picto_hauteur'])
+
+
+def pictos_titre(film=None, opts=None, seances_film=None):
+    """pictos à poser à droite du titre d'une ligne de grille : pictos déclarés (film puis ligne), ⌛ si dernière
+    semaine, ♥ si coup de cœur, + automatiques (Atmos si une séance est bleue, étoile si une séance est violette)"""
+    film, opts = film or {}, opts or {}
+    out = []
+    for src in (film, opts):
+        for p in src.get('pictos', []) or []:
+            out.append(CODES['anciens_pictos'].get(str(p), str(p)))
+        if src.get('malentendants'):
+            out.append('bim')
+        if src.get('derniere'):
+            out.append('sablier')
+        if src.get('coeur'):
+            out.append('coeur')
+    lettres_ = set()
+    for lst in (seances_film or {}).values():
+        for t in lst:
+            lettres_ |= set(_seance(t))
+    for p, v in PICTOS.items():
+        if v.get('auto') and v['auto'] in lettres_:
+            out.append(p)
+    return [p for p in ORDRE_PICTOS if p in out]
+
+
 def items_legende(codes):
     """items de légende dans l'ordre du réseau, pour les codes présents seulement.
     Chaque item : {"code", "runs": [[texte, style]]} — style : lettre de couleur / 's' (souligné) / 'z' (♥) / 'p:<picto>'"""
@@ -106,12 +144,16 @@ def items_legende(codes):
             continue
         if c in STYLES:
             s = STYLES[c]
-            out.append({'code': c, 'runs': [[s['nom'], c], [' : ' + s['texte'], '']]})
+            it = {'code': c, 'runs': [[s['nom'], c], [' : ' + s['texte'], '']], 'court': s['legende']}
+            pl = [p for p, v in PICTOS.items() if v.get('style') == c]
+            if pl:
+                it['picto'] = pl[0]                  # légende : logo + couleur (ex. Atmos + « Bleu »)
+            out.append(it)
         elif c == 'coeur':
-            out.append({'code': c, 'picto': 'coeur', 'runs': [['♥', 'z'], [' : ' + PICTOS['coeur']['texte'], '']]})
+            out.append({'code': c, 'picto': 'coeur', 'runs': [['♥', 'z'], [' : ' + PICTOS['coeur']['texte'], '']], 'court': PICTOS['coeur']['legende']})
         else:
             p = '12' if c == 'age' else c
-            out.append({'code': c, 'picto': p, 'runs': [['', 'p:' + p], [PICTOS[p]['texte'], '']]})
+            out.append({'code': c, 'picto': p, 'runs': [['', 'p:' + p], [PICTOS[p]['texte'], '']], 'court': PICTOS[p]['legende']})
     return out
 
 

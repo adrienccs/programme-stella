@@ -1,39 +1,157 @@
 {
   "_doc": "Code UNIQUE des séances pour tout le réseau (décision d'Adrien du 08/10/2026). Ne pas modifier sans sa demande : toute modification se propage aux 6 cinémas (outils/synchro.py).",
   "couleurs": {
-    "rouge":  "#D41818",
-    "bleu":   "#1565C0",
+    "rouge": "#D41818",
+    "bleu": "#1565C0",
     "violet": "#9C4DCC",
     "orange": "#E8650A",
-    "vert":   "#2E8B3A"
+    "vert": "#2E8B3A"
   },
   "styles": {
-    "r": {"couleur": "rouge",  "nom": "Rouge",    "texte": "version originale sous-titrée (VOSTFR)"},
-    "b": {"couleur": "bleu",   "nom": "Bleu",     "texte": "séance en Dolby Atmos"},
-    "v": {"couleur": "violet", "nom": "Violet",   "texte": "séance événement (voir les événements)"},
-    "o": {"couleur": "orange", "nom": "Orange",   "texte": "séance à prix spécial (voir les tarifs)"},
-    "g": {"couleur": "vert",   "nom": "Vert",     "texte": "court-métrage"},
-    "s": {"souligne": true,    "nom": "Souligné", "texte": "goûter offert"}
+    "r": {
+      "couleur": "rouge",
+      "nom": "Rouge",
+      "texte": "version originale sous-titrée (VOSTFR)",
+      "legende": "VOSTFR"
+    },
+    "b": {
+      "couleur": "bleu",
+      "nom": "Bleu",
+      "texte": "séance en Dolby Atmos",
+      "legende": "Dolby Atmos"
+    },
+    "v": {
+      "couleur": "violet",
+      "nom": "Violet",
+      "texte": "séance événement (voir les événements)",
+      "legende": "Séance événement"
+    },
+    "o": {
+      "couleur": "orange",
+      "nom": "Orange",
+      "texte": "séance à prix spécial (voir les tarifs)",
+      "legende": "Prix spécial"
+    },
+    "g": {
+      "couleur": "vert",
+      "nom": "Vert",
+      "texte": "court-métrage",
+      "legende": "Court-métrage"
+    },
+    "s": {
+      "souligne": true,
+      "nom": "Souligné",
+      "texte": "goûter offert",
+      "legende": "Goûter offert"
+    }
   },
   "pictos": {
-    "coeur":   {"texte": "coup de cœur",                         "fichier": "RES picto coeur.png"},
-    "sablier": {"texte": "dernière semaine de diffusion",       "fichier": "RES picto sablier.png"},
-    "ad":      {"texte": "audiodescription (casque au guichet)", "fichier": "RES picto ad.png"},
-    "bim":     {"texte": "boucle magnétique (au guichet)",      "fichier": "RES picto bim.png"},
-    "12":      {"texte": "interdit aux -12, -16 ou -18 ans",    "fichier": "RES picto 12.png", "groupe": "age"},
-    "16":      {"texte": "interdit aux -12, -16 ou -18 ans",    "fichier": "RES picto 16.png", "groupe": "age"},
-    "18":      {"texte": "interdit aux -12, -16 ou -18 ans",    "fichier": "RES picto 18.png", "groupe": "age"}
+    "etoile": {
+      "texte": "séance événement (voir les événements)",
+      "fichier": "RES picto etoile.png",
+      "style": "v",
+      "auto": "v",
+      "legende": "Séance événement"
+    },
+    "sablier": {
+      "texte": "dernière semaine de diffusion",
+      "fichier": "RES picto sablier.png",
+      "legende": "Dernière semaine"
+    },
+    "atmos": {
+      "texte": "séance en Dolby Atmos",
+      "fichier": "RES picto atmos.png",
+      "style": "b",
+      "auto": "b",
+      "hauteur": 2.3,
+      "legende": "Dolby Atmos"
+    },
+    "12": {
+      "texte": "interdit aux -12, -16 ou -18 ans",
+      "fichier": "RES picto 12.png",
+      "groupe": "age",
+      "legende": "Interdit -12/-16/-18"
+    },
+    "16": {
+      "texte": "interdit aux -12, -16 ou -18 ans",
+      "fichier": "RES picto 16.png",
+      "groupe": "age",
+      "legende": "Interdit -12/-16/-18"
+    },
+    "18": {
+      "texte": "interdit aux -12, -16 ou -18 ans",
+      "fichier": "RES picto 18.png",
+      "groupe": "age",
+      "legende": "Interdit -12/-16/-18"
+    },
+    "bim": {
+      "texte": "boucle magnétique (au guichet)",
+      "fichier": "RES picto bim.png",
+      "legende": "Boucle magnétique"
+    },
+    "ad": {
+      "texte": "audiodescription (casque au guichet)",
+      "fichier": "RES picto ad.png",
+      "legende": "Audiodescription"
+    },
+    "coeur": {
+      "texte": "coup de cœur",
+      "fichier": "RES picto coeur.png",
+      "hauteur": 2.5,
+      "legende": "Coup de cœur"
+    }
   },
-  "ordre_legende": ["r", "b", "v", "o", "g", "s", "coeur", "sablier", "ad", "bim", "age"],
-  "priorite_couleurs": ["r", "b", "v", "g", "o"],
+  "ordre_legende": [
+    "r",
+    "b",
+    "v",
+    "o",
+    "g",
+    "s",
+    "coeur",
+    "sablier",
+    "ad",
+    "bim",
+    "age"
+  ],
+  "priorite_couleurs": [
+    "r",
+    "b",
+    "v",
+    "g",
+    "o"
+  ],
   "_priorite": "si une séance a plusieurs couleurs, la première de cette liste gagne (un court-métrage à prix spécial reste vert)",
   "anciens_codes": {
     "_doc": "Conversion des anciens mois.json (outils/convertir_codes.py). Clé = cinéma, valeur = ancien style -> nouveau.",
-    "7emeart":       {"r": "o", "v": "o", "b": "v", "i": "g"},
-    "stella":        {"r": "o", "v": "o", "b": "v", "i": "g"},
-    "cinekids":      {"r": "o", "v": "o", "b": "v", "i": "g"},
-    "fauteuilrouge": {"a": "b"},
-    "belleepine":    {},
-    "commynes":      {}
-  }
+    "7emeart": {
+      "r": "o",
+      "v": "o",
+      "b": "v",
+      "i": "g"
+    },
+    "stella": {
+      "r": "o",
+      "v": "o",
+      "b": "v",
+      "i": "g"
+    },
+    "cinekids": {
+      "r": "o",
+      "v": "o",
+      "b": "v",
+      "i": "g"
+    },
+    "fauteuilrouge": {
+      "a": "b"
+    },
+    "belleepine": {},
+    "commynes": {}
+  },
+  "_pictos": "Pictos posés à droite du titre dans la grille, dans l'ordre ci-dessus (de gauche à droite). « auto » : ajouté automatiquement quand une séance du film porte ce code (étoile = séance violette, Atmos = séance bleue). « style » : la légende fusionne le picto et la couleur (« Bleu : séance en Dolby Atmos » avec le logo).",
+  "picto_hauteur": 2.6,
+  "anciens_pictos": {
+    "malentendants": "bim"
+  },
+  "_legende": "« legende » = libellé court de la légende dessinée (3 colonnes) ; « texte » = libellé long (légendes en ligne, ex. CinéKids)."
 }
