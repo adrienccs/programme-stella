@@ -1,0 +1,39 @@
+{
+  "_doc": "Code UNIQUE des séances pour tout le réseau (décision d'Adrien du 08/10/2026). Ne pas modifier sans sa demande : toute modification se propage aux 6 cinémas (outils/synchro.py).",
+  "couleurs": {
+    "rouge":  "#D41818",
+    "bleu":   "#1565C0",
+    "violet": "#9C4DCC",
+    "orange": "#E8650A",
+    "vert":   "#2E8B3A"
+  },
+  "styles": {
+    "r": {"couleur": "rouge",  "nom": "Rouge",    "texte": "version originale sous-titrée (VOSTFR)"},
+    "b": {"couleur": "bleu",   "nom": "Bleu",     "texte": "séance en Dolby Atmos"},
+    "v": {"couleur": "violet", "nom": "Violet",   "texte": "séance événement (voir les événements)"},
+    "o": {"couleur": "orange", "nom": "Orange",   "texte": "séance à prix spécial (voir les tarifs)"},
+    "g": {"couleur": "vert",   "nom": "Vert",     "texte": "court-métrage"},
+    "s": {"souligne": true,    "nom": "Souligné", "texte": "goûter offert"}
+  },
+  "pictos": {
+    "coeur":   {"texte": "coup de cœur",                         "fichier": "RES picto coeur.png"},
+    "sablier": {"texte": "dernière semaine de diffusion",       "fichier": "RES picto sablier.png"},
+    "ad":      {"texte": "audiodescription (casque au guichet)", "fichier": "RES picto ad.png"},
+    "bim":     {"texte": "boucle magnétique (au guichet)",      "fichier": "RES picto bim.png"},
+    "12":      {"texte": "interdit aux -12, -16 ou -18 ans",    "fichier": "RES picto 12.png", "groupe": "age"},
+    "16":      {"texte": "interdit aux -12, -16 ou -18 ans",    "fichier": "RES picto 16.png", "groupe": "age"},
+    "18":      {"texte": "interdit aux -12, -16 ou -18 ans",    "fichier": "RES picto 18.png", "groupe": "age"}
+  },
+  "ordre_legende": ["r", "b", "v", "o", "g", "s", "coeur", "sablier", "ad", "bim", "age"],
+  "priorite_couleurs": ["r", "b", "v", "g", "o"],
+  "_priorite": "si une séance a plusieurs couleurs, la première de cette liste gagne (un court-métrage à prix spécial reste vert)",
+  "anciens_codes": {
+    "_doc": "Conversion des anciens mois.json (outils/convertir_codes.py). Clé = cinéma, valeur = ancien style -> nouveau.",
+    "7emeart":       {"r": "o", "v": "o", "b": "v", "i": "g"},
+    "stella":        {"r": "o", "v": "o", "b": "v", "i": "g"},
+    "cinekids":      {"r": "o", "v": "o", "b": "v", "i": "g"},
+    "fauteuilrouge": {"a": "b"},
+    "belleepine":    {},
+    "commynes":      {}
+  }
+}

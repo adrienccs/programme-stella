@@ -1,0 +1,2 @@
+programme-commun bbab42e · empreinte f578276fc720b416 · copié le 08/10/2026 18:17
+NE PAS MODIFIER ICI : modifier adrienccs/programme-commun puis relancer outils/synchro.py copier.

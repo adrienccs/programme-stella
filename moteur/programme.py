@@ -33,6 +33,9 @@ ap_.add_argument('--out', required=True)
 A = ap_.parse_args()
 
 CIN = json.load(open(A.cinema, encoding='utf-8'))
+sys.path.insert(0, os.path.abspath(A.kit))
+from commun import seances, bandeau          # code des séances + bandeau du réseau (programme-commun, 08/10/2026)
+CIN = seances.appliquer(CIN)
 MOIS = json.load(open(A.mois, encoding='utf-8'))
 IMG_DIRS = [A.images, os.path.join(A.kit, 'assets', 'cinemas', CIN['id']), os.path.join(A.kit, 'assets', 'communs')]
 
@@ -124,42 +127,18 @@ H_FILM_PT = float(CIN.get('h_ligne_grille', 22.0))    # hauteur ligne de grille
 
 def hf(we):                          # hauteur de ligne d'une semaine (« h_ligne » pour resserrer une grille chargée)
     return float(we.get('h_ligne', H_FILM_PT))
-LEGENDE = CIN.get('legende_grille')
+LEGENDE = True                                 # légende du réseau (programme-commun) : seuls les codes présents
 LEG_LEAD_MM = 6.5 * 25.4 / 72                  # interligne de la légende (6,5 pt)
 
 
 def codes_semaine(we):
-    """codes de légende réellement utilisés dans une semaine : lettres de style des séances, i (courts), coeur"""
-    u = set()
-    for k, se, o in we['films']:
-        if MOIS['films'][k].get('court'):
-            u.add('i')
-        if o.get('coeur'):
-            u.add('coeur')
-        for lst in se.values():
-            for t in lst:
-                if isinstance(t, dict):
-                    u |= set(t.get('s', ''))
-    return u
+    """codes réellement utilisés dans une semaine (séances, courts, coups de cœur, pictos)"""
+    return seances.codes_utilises(we['films'], films=MOIS['films'])
 
 
 def legende_semaine(we):
-    """legende_grille par lignes d'items {"code", "runs"} : seuls les items utilisés dans la semaine sont gardés
-    (retour client 07/10/2026 : pas de « Souligné : goûter » une semaine sans goûter)"""
-    if not LEGENDE or isinstance(LEGENDE, str) or not isinstance(LEGENDE[0][0], dict):
-        return LEGENDE
-    u = codes_semaine(we); out = []
-    for ligne in LEGENDE:
-        its = [it for it in ligne if it.get('code') in u or it.get('toujours')]
-        if not its:
-            continue
-        runs = []
-        for j, it in enumerate(its):
-            if j:
-                runs.append(['   ·   ', ''])
-            runs += [list(r) for r in it['runs']]
-        out.append(runs)
-    return out
+    """légende du réseau limitée aux codes présents dans la semaine (décision d'Adrien du 08/10/2026)"""
+    return seances.lignes_legende(codes_semaine(we))
 
 
 GRID_BOTTOM = 206.0
@@ -416,15 +395,10 @@ if LEGENDE:                                       # légende sous chaque grille,
         for li, ligne in enumerate(LEG_W):
             for si, (txt, sty) in enumerate(ligne):
                 c = copy.deepcopy(tpl)
-                if 'r' in sty: c.set('FillColor', grid.ROUGE or BLUE)
-                if 'v' in sty: c.set('FillColor', 'Color/Grille violet')
-                if 'b' in sty: c.set('FillColor', 'Color/Grille bleu')
-                if 'g' in sty: c.set('FillColor', 'Color/Grille vert')
-                if 's' in sty: c.set('Underline', 'true'); c.set('UnderlineOffset', '1.2'); c.set('UnderlineWeight', '0.5')
-                if 'i' in sty: c.set('Skew', '12')
-                if sty: c.set('FontStyle', '77 Bold Condensed')
-                if 'z' in sty:                   # pictogramme Zapf Dingbats (♥ coup de cœur)
-                    grid.set_font(c, 'Zapf Dingbats', 'Regular')
+                if sty.startswith('p:'):          # picto image : pas dessiné dans ce moteur → texte seul
+                    WARN.append(f"picto « {sty[2:]} » utilisé : pas encore dessiné dans les grilles de ce cinéma")
+                    continue
+                seances.style_run(c, sty, BLUE, grid.set_font)
                 last = si == len(ligne) - 1
                 etree.SubElement(c, 'Content').text = txt + ('\u2028' if last and li < len(LEG_W) - 1 else '')
                 psr.append(c)
@@ -532,6 +506,9 @@ def grow_date(grp, dst, top, h):
             p.find('Leading').text = str(round(float(p.find('Leading').text) * 1.3, 1))
 
 
+BCTX = bandeau.Contexte(d=d, E=E, img=img, story_of=story_of, etree=etree, alertes=WARN)
+TOUS_EVTS = [e for e in [MOIS.get('evenement_special')] + list(MOIS.get('prochainement', []) or []) if e]
+
 def place_slot(slot, x0, top, h, ev, sp):
     im_, tf, ln, grp, dst, idx = slot
     if sp != SP1:
@@ -547,19 +524,7 @@ def place_slot(slot, x0, top, h, ev, sp):
         for i in (tf, ln, grp):
             d.delete(i)
         return
-    dy = (top + off) - iy0 + (h - (iy1 - iy0)) / 2
-    for i in (tf, ln, grp):
-        d.move(E(i), x0 - ix0, dy)
-    d.set_bounds(E(im_), x0, top + off, x0 + w, top + off + h)
-    E(im_).set('FillColor', 'Swatch/None')
-    img(im_, ev['image'], 'fill', tuple(ev.get('cadrage', (0.5, 0.5))))
-    d.set_text(story_of(tf), {0: ev['surtitre'], 2: ev['titre'], 4: ev['ligne'], 6: ev['ligne_grasse']})
-    dt = ev['date']
-    m = {idx[0]: dt['jour'] + ' ', idx[1]: dt['num'], idx[2]: dt['mois'], idx[3]: dt['heure']}
-    if dst == 'ud1ab':
-        m[3] = dt.get('exposant', '')
-    d.set_text(dst, m)
-    grow_date(grp, dst, top + off, h)
+    bandeau.poser(BCTX, slot, x0, top + off, h, ev, tous=TOUS_EVTS)   # bandeau du réseau (programme-commun)
 
 
 used_slots = []

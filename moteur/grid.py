@@ -1,5 +1,8 @@
 """Rebuild the screening grid (story ucf0d) as one table with one section per week-end."""
 import copy
+import os, sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+from commun import seances as RES
 from lxml import etree
 
 # Stella : séances « r » (4,50 €) en ROUGE même si la couleur du cinéma est orange
@@ -267,8 +270,6 @@ def build_one(d, story_id, we, total_w_pt, h_film=18.0, split=None, day_w=22.0):
             x.set('PointSize', '8' if _titre else '7')
             if chasse is not None and _titre and chasse < 1.0:
                 x.set('HorizontalScale', str(round(chasse * 100, 1)))   # titre resserré pour tenir sur sa ligne
-            if opts.get('court'):
-                x.set('Skew', '12')                      # courts-métrages en italique
         if opts.get('coeur'):                            # coup de cœur : ♥ (Zapf Dingbats) couleur du cinéma après le titre
             _c0 = list(c.iter('CharacterStyleRange'))[0]
             _h = copy.deepcopy(_c0)
@@ -276,7 +277,7 @@ def build_one(d, story_id, we, total_w_pt, h_film=18.0, split=None, day_w=22.0):
                 if x.tag in ('Content', 'Br'):
                     _h.remove(x)
             set_font(_h, 'Zapf Dingbats', 'Regular')
-            _h.set('FillColor', BLUE); _h.set('PointSize', '7'); _h.set('Skew', '0')
+            _h.set('FillColor', RES.COEUR); _h.set('PointSize', '7'); _h.set('Skew', '0')
             etree.SubElement(_h, 'Content').text = '\u00a0\u2665'
             _c0.addnext(_h)
         fus = opts.get('fusion')
@@ -316,14 +317,7 @@ def build_one(d, story_id, we, total_w_pt, h_film=18.0, split=None, day_w=22.0):
             for k, tt in enumerate(seances):
                 h, st = (tt, '') if isinstance(tt, str) else (tt['h'], tt.get('s', ''))
                 x = copy.deepcopy(csr0)
-                if 'r' in st: x.set('FillColor', ROUGE or BLUE)
-                if 'v' in st: x.set('FillColor', 'Color/Grille violet')
-                if 'b' in st: x.set('FillColor', 'Color/Grille bleu')
-                if 'g' in st: x.set('FillColor', 'Color/Grille vert')
-                if 's' in st:
-                    x.set('Underline', 'true'); x.set('UnderlineOffset', '1.5'); x.set('UnderlineWeight', '0.8')
-                if 'i' in st or opts.get('court'):
-                    x.set('Skew', '12')
+                RES.styler(x, st, court=opts.get('court'), vostfr=opts.get('vostfr'))   # code du réseau (programme-commun)
                 etree.SubElement(x, 'Content').text = h
                 if k < len(seances) - 1:
                     etree.SubElement(x, 'Br')

@@ -34,6 +34,9 @@ ap_.add_argument('--out', required=True)
 A = ap_.parse_args()
 
 CIN = json.load(open(A.cinema, encoding='utf-8'))
+sys.path.insert(0, os.path.abspath(A.kit))
+from commun import seances, bandeau          # code des séances + bandeau du réseau (programme-commun, 08/10/2026)
+CIN = seances.appliquer(CIN)
 MOIS = json.load(open(A.mois, encoding='utf-8'))
 IMG_DIRS = [A.images, os.path.join(A.kit, 'assets', 'cinemas', CIN['id']),
             os.path.join(A.kit, 'assets', 'communs-hd'), os.path.join(A.kit, 'assets', 'communs')]
@@ -216,33 +219,9 @@ SEMAINE = bool(MOIS.get('semaines'))          # 7e Art : 1 grille par SEMAINE, 6
 
 
 def legende_mois():
-    """légende de l'affiche : items de « legende_grille » utilisés dans AU MOINS une semaine du mois"""
-    L = CIN.get('legende_grille')
-    if not L or isinstance(L, str) or not isinstance(L[0][0], dict):
-        return L
-    u = set()
-    for w in MOIS.get('semaines') or MOIS.get('weekends', []):
-        for e in w['films']:
-            k, se, o = (e['film'], e.get('seances', {}), e) if isinstance(e, dict) else (e[0], e[1], e[2] if len(e) > 2 else {})
-            if MOIS['films'][k].get('court'):
-                u.add('i')
-            if o.get('coeur'):
-                u.add('coeur')
-            for lst in se.values():
-                for t in lst:
-                    if isinstance(t, dict):
-                        u |= set(t.get('s', ''))
-    out = []
-    for ligne in L:
-        its = [it for it in ligne if it.get('code') in u or it.get('toujours')]
-        if its:
-            runs = []
-            for jj, it in enumerate(its):
-                if jj:
-                    runs.append(['   ·   ', ''])
-                runs += [list(r) for r in it['runs']]
-            out.append(runs)
-    return out
+    """légende de l'affiche : codes du réseau présents dans AU MOINS une semaine du mois (programme-commun)"""
+    return seances.lignes_legende(seances.codes_utilises(MOIS.get('semaines') or MOIS.get('weekends', []) or MOIS.get('lignes', []),
+                                                         films=MOIS.get('films')), car_par_ligne=130)
 
 
 LEG_LINES = len(legende_mois() or [])
@@ -307,7 +286,7 @@ if COLONNES:
     PRO = MOIS.get('prochainement', [])[:3]
     GW = float(CIN.get('affiche_largeur_grilles', 170.0))
     RX0, RX1 = X1 - GW, X1
-    LEG_H = (1.2 + LEG_LINES * 11 * 25.4 / 72) if CIN.get('legende_grille') else 0.0
+    LEG_H = (1.2 + LEG_LINES * 11 * 25.4 / 72) if LEG_LINES else 0.0
     GRID_B = BODY_B - LEG_H - 1.5
     COLS_G = [(RX0, RX1, WE)]
     _base = sum((grid.H_DAYS + len(w['films']) * hf(w)) * 25.4 / 72 for w in WE)
@@ -321,7 +300,7 @@ elif SEMAINE:
     VED_H, EV_H2, VED_ZOOM = 36.0, 26.0, 1.7    # événement vedette (ex. Ciné-Kids) pleine largeur, autres dessous
     _ved = any(e.get('vedette_affiche') for e in PRO)
     PRO_T = (BODY_B - (9.6 + (VED_H + 3.0 + EV_H2 if _ved else EV_H) + 2.2)) if PRO else BODY_B
-    LEG_H = (0.2 + LEG_LINES * 11 * 25.4 / 72) if CIN.get('legende_grille') else 0.0
+    LEG_H = (0.2 + LEG_LINES * 11 * 25.4 / 72) if LEG_LINES else 0.0
     GRID_B = PRO_T - 4.0 - LEG_H
     MID = (X0 + X1) / 2
     COLS_G = [(X0, MID - 3.0, WE[:2]), (MID + 3.0, X1, WE[2:4])]
@@ -578,6 +557,10 @@ def grow_date(grp, dst, top, h, zoom=1.35, w=31.0):
             p.find('Leading').text = str(round(float(p.find('Leading').text) * zoom * 0.96, 1))
 
 
+BCTX = bandeau.Contexte(d=d, E=E, img=img, story_of=story_of, etree=etree, alertes=WARN)
+TOUS_EVTS = [e for e in [MOIS.get('evenement_special')] + list(MOIS.get('prochainement', []) or [])
+             + list(MOIS.get('evenements', []) or []) if e]
+
 def place_slot(slot, x0, top, h, ev, x1=None, zoom=1.0):
     im_, tf, ln, grp, dst, idx = slot
     for i in (im_, tf, ln, grp):
@@ -588,6 +571,10 @@ def place_slot(slot, x0, top, h, ev, x1=None, zoom=1.0):
         img(im_, ev['visuel_affiche'], 'fill', (0.5, 0.5))
         for i in (tf, ln, grp):
             d.delete(i)
+        return
+    if zoom <= 1 and not ev.get('visuel'):          # bandeau d'événement du réseau (programme-commun, 08/10/2026)
+        bandeau.poser(BCTX, slot, x0, top, h, ev, tous=TOUS_EVTS, largeur=(x1 - x0) if x1 else None,
+                      image_cle='image_affiche')
         return
     ix0, iy0, ix1, iy1 = d.bbox(E(im_))
     w = (x1 - x0) if x1 else ix1 - ix0
