@@ -40,7 +40,7 @@ DEST = os.path.join(A.sortie, 'assemblage', NOMV)
 shutil.rmtree(os.path.join(A.sortie, 'assemblage'), ignore_errors=True)
 os.makedirs(os.path.join(DEST, 'Links'))
 shutil.copytree(os.path.join(A.kit, 'assets', 'polices-indesign'), os.path.join(DEST, 'Document fonts'))
-shutil.copy(os.path.join(A.kit, 'outils', 'Relier les liens.jsx'), DEST)
+# 08/10/2026 (Adrien) : plus de « Relier les liens.jsx » dans le zip, il l'a déjà installé.
 
 base_mac = CIN.get('dossier_assemblage_mac', '').rstrip('/')
 new_prefix = (base_mac + '/' + urllib.parse.quote(NOMV) + '/Links/') if base_mac else None
@@ -87,12 +87,7 @@ with zipfile.ZipFile(idml, 'w') as z:
             p = os.path.join(root, f); a = os.path.relpath(p, SRC)
             if a != 'mimetype':
                 z.write(p, a, compress_type=zipfile.ZIP_DEFLATED)
-if A.apercus:
-    pages = [i for i in (1, 2) if os.path.exists(f'{A.apercus}-{i}.png')]
-    for i, lab in ((1, 'interieur'), (2, 'exterieur')):
-        p = f'{A.apercus}-{i}.png'
-        if os.path.exists(p):
-            shutil.copy(p, os.path.join(DEST, f'APERCU {lab}.png' if len(pages) > 1 else 'APERCU.png'))
+# 08/10/2026 (Adrien) : plus d'aperçus de contrôle dans le zip (--apercus accepté mais ignoré).
 
 lieu = (urllib.parse.unquote(base_mac.replace('file:', '')) + '/') if base_mac else '(non défini)'
 open(os.path.join(DEST, 'LISEZ-MOI.txt'), 'w', encoding='utf-8').write(f"""{NOMV}
@@ -101,14 +96,12 @@ Dossier d'assemblage complet
   {NOMV}.idml      → à ouvrir dans InDesign
   Links/                → {len(renamed)} images liées (noms sans accents : pas de souci d'encodage)
   Document fonts/       → polices du document (activées automatiquement par InDesign)
-  Relier les liens.jsx  → script qui relie TOUTES les images en une fois
 
 LIENS — 2 façons, sans relier image par image :
  A. Dézipper ce dossier dans : {lieu}
     → les liens sont trouvés directement à l'ouverture.
- B. Ailleurs : ouvrir l'IDML, puis lancer le script « Relier les liens.jsx »
-    (Fenêtre > Utilitaires > Scripts ; la 1re fois : clic droit sur « Utilisateur » > Faire apparaître dans
-    le Finder, y copier le script) → choisir le dossier Links → tout est relié.
+ B. Ailleurs : ouvrir l'IDML, puis lancer le script « Relier les liens.jsx » (déjà installé)
+    (Fenêtre > Utilitaires > Scripts) → choisir le dossier Links → tout est relié.
  Ensuite : Fichier > Enregistrer sous… en .indd DANS ce dossier (à côté de Links). Les ouvertures suivantes
  du .indd retrouvent les liens toutes seules.
 

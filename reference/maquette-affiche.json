@@ -101,7 +101,7 @@
   "cinemas/stella.json": "25ead930efbb8e5f",
   "moteur/adapt.py": "247f5fe8ceebc49f",
   "moteur/affiche.py": "c6794d22d8384dab",
-  "moteur/assembler.py": "7a02db3bd8df8cc1",
+  "moteur/assembler.py": "c50bdcad2e7cb085",
   "moteur/grid.py": "b35002ad59837ad8",
   "moteur/idmllib.py": "e9c44aaa3af3494a",
   "moteur/programme.py": "8eaca15f4e753357",
