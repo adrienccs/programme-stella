@@ -58,6 +58,7 @@ X0, X1 = 9.8, 287.2                    # marges du contenu
 d._image_template = copy.deepcopy(d.el('u8423').find('Image'))
 grid.capture(d)
 grid.ROUGE = 'Color/Grille rouge' if 'rouge' in CIN.get('couleurs_grille', {}) else None
+grid.TITRE_UNE_LIGNE = bool(CIN.get('titres_grille_entiers'))   # Stella 08/10/2026 : titres jamais en « gros + petit »
 
 # ---------------------------------------------------------------- page A3
 pg = d.spreads[SP1].getroot().find('Spread/Page')
@@ -276,8 +277,15 @@ def corps_grille(sid):
         col, row = (int(v) for v in cell.get('Name').split(':'))
         if row == 0:
             sizes = [CORPS['dates']] if col == 0 else [CORPS['jours']]
-        elif col == 0:
-            sizes = [CORPS['titre'], CORPS['duree']]
+        elif col == 0:                            # titre (même taille sur ses 2 lignes) / durée en petit
+            for c in cell.iter('CharacterStyleRange'):
+                ps = CORPS['duree'] if 'light' in c.get('AppliedCharacterStyle', '') else CORPS['titre']
+                c.set('PointSize', str(ps))
+                pr = c.find('Properties')
+                ld = pr.find('Leading') if pr is not None else None
+                if ld is not None and ld.get('type') == 'unit':
+                    ld.text = str(round(ps * 1.08, 2))
+            continue
         elif cell.get('ColumnSpan') and int(cell.get('ColumnSpan')) > 1:
             sizes = [CORPS['fusion']]
         else:
@@ -419,6 +427,8 @@ def one_grid(we, gx0_, gx1_, y):
     else:
         gw['label_horaires'] = label_dates(we)   # les dates remplacent « HORAIRES » dans la grille
     g = take('ucf09', dup=True)
+    if CORPS:
+        grid.TITRE_PT = CORPS['titre'] / K        # corps final du titre ramené aux unités avant mise à l'échelle
     h = grid.build_one(d, g.get('ParentStory'), gw, (gx1_ - gx0_) * PT / K, h_film=hf(we), split=MOIS['films'],
                         day_w=float(CIN.get('affiche_largeur_jour', 22.0)))   # cases horaires élargies (retour client 06/10)
     scale_story(g.get('ParentStory'), K, lead=1.08)

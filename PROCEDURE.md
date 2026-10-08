@@ -170,6 +170,12 @@ Différences propres au Stella :
 - Affiche de film au format 2:3 dont le titre est coupé (cadres 3:4 → ~6 % rognés en haut et en bas) : créer
   « STE <film> entiere.jpg » = affiche élargie à 0,76 de ratio avec ses bords prolongés en flou assombri, puis
   `"affiche"` + `"cadrage_affiche": [0.5, 0.5]` dans le film (et dans `couverture.affiches`). Ex. Heart of the Beast (07/10/2026).
+- Couverture : Facebook SEUL (`reseaux_visibles` = [0, 0.11] du fichier RÉSEAUX.ai, recentré — comme Cerizay), retour 08/10/2026.
+- Titres des grilles (retour client 08/10/2026, `titres_grille_entiers: true`) : JAMAIS de titre coupé en « gros + petit ».
+  Titre entier sur UNE ligne, resserré au besoin (chasse ≥ 80 %, `grid.TITRE_CHASSE_MIN`) ; sinon 2 lignes coupées au plus
+  équilibré, la 2e partie à la MÊME taille et dans le même style, puis « · durée » en petit (ex. « Ducobu et le fantôme /
+  de St-Potache · 1h30 »). Sur l'affiche, mesure faite au corps final (`affiche_corps_grille`). Les tableaux `grille` en liste
+  dans mois.json ne servent plus qu'à défaut.
 - Logo : `outils/logo_cinema.py "Le Stella" "Moncoutant-sur-Sèvre" "#F59042" "assets/cinemas/stella/STE logo le stella"`.
 - Fauteuil : `STE fauteuil orange.png` (fauteuil rouge du 7e Art recoloré en orange).
 - Partenaires : ceux du 7e Art, logo ville de Cerizay remplacé par celui de Moncoutant-sur-Sèvre (`STE logo ville moncoutant.png`).
@@ -254,6 +260,8 @@ ne plus toucher à `cinemas/stella.json`, `moteur/*.py`, `outils/logo_cinema.py`
 contrôle `verif_maquette.py verifier` obligatoire avant chaque livraison (« identique à la référence validée »).
 
 Journal :
+- 08/10/2026 (programme v08 / affiche v09, référence re-figée) : Facebook seul ; Ciné-Kids jusqu'au 1er novembre ;
+  titres des grilles entiers (une ligne resserrée, ou 2 lignes de même taille).
 - 07/10/2026 (programme v06 / affiche v07) : affiche Heart of the Beast entière (titre coupé).
 - 07/10/2026 (programme v05 / affiche v06) : contremarques sans Fleury Michon ; tarifs affiche 0,97 ; Ciné-Ado « film surprise ».
 - 07/10/2026 (programme v04 / affiche v05) : moteur re-synchronisé sur le 7e Art v18/v11 (déclinaisons, remplacer_logos,

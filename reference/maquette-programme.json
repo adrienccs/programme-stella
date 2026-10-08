@@ -229,9 +229,9 @@
    406.71
   ],
   "ud3d3": [
-   267.33,
+   274.47,
    473.11,
-   283.37,
+   276.23,
    476.09
   ],
   "ud3da": [
@@ -266,13 +266,13 @@
   ]
  },
  "reglages": {
-  "cinemas/stella.json": "418b78423f9ca933",
+  "cinemas/stella.json": "25ead930efbb8e5f",
   "moteur/adapt.py": "247f5fe8ceebc49f",
-  "moteur/affiche.py": "739ef7afd0368c0e",
+  "moteur/affiche.py": "3fe590ce9fd3f6ce",
   "moteur/assembler.py": "7a02db3bd8df8cc1",
-  "moteur/grid.py": "dbe1a1a6f6aa71ad",
+  "moteur/grid.py": "b35002ad59837ad8",
   "moteur/idmllib.py": "e9c44aaa3af3494a",
-  "moteur/programme.py": "2ac0a150e737e73e",
+  "moteur/programme.py": "0862c3e884839840",
   "outils/bloc_cinekids.py": "fc78a7e1426143f5",
   "outils/logo_cinema.py": "60d47e854a1e6703"
  }

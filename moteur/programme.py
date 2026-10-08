@@ -56,6 +56,7 @@ WARN = []
 d._image_template = copy.deepcopy(d.el('u8423').find('Image'))
 grid.capture(d)
 grid.ROUGE = 'Color/Grille rouge' if 'rouge' in CIN.get('couleurs_grille', {}) else None
+grid.TITRE_UNE_LIGNE = bool(CIN.get('titres_grille_entiers'))   # Stella 08/10/2026 : titres jamais en « gros + petit »
 TEMPLATE_SYN = copy.deepcopy(d.story('ubb36').getroot().find('Story'))
 
 

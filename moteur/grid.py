@@ -6,6 +6,45 @@ from lxml import etree
 # (nuance « Grille rouge » de couleurs_grille ; sinon couleur du cinéma comme au 7e Art)
 ROUGE = None
 
+# Stella (retour client 08/10/2026) : titres des grilles jamais coupés en « gros + petit ».
+#   - titre entier sur UNE ligne, resserré au besoin (chasse ≥ TITRE_CHASSE_MIN) ;
+#   - sinon 2 lignes : la 2e partie du titre garde la MÊME taille et le même style, puis « · durée » en petit.
+# TITRE_PT = corps du titre en unités de la grille AVANT mise à l'échelle (affiche : corps fixe / K).
+TITRE_UNE_LIGNE = False
+TITRE_PT = 8.0
+TITRE_CHASSE_MIN = 0.80
+_FONT_TITRE = None
+
+
+def coupe_equilibree(titre, suite):
+    """coupe un titre en 2 lignes de largeurs les plus proches (la 2e porte aussi « · durée » en petit, ≈ 0,8×)"""
+    mots = titre.split(' ')
+    best = None
+    for i in range(1, len(mots)):
+        a, b = ' '.join(mots[:i]), ' '.join(mots[i:])
+        if b.split(' ')[0].lower() in ('de', 'du', 'des', 'et', 'le', 'la', 'les', 'à', 'au', 'aux', "l'", 'l’') and i < len(mots) - 1 \
+                and len(mots[i - 1]) > 2:
+            pen = 0.0
+        else:
+            pen = 0.0
+        la = largeur_titre(a, TITRE_PT)
+        lb = largeur_titre(b, TITRE_PT) + largeur_titre(suite, TITRE_PT) * 0.75
+        m = max(la, lb) + pen
+        if best is None or m < best[2]:
+            best = (a, b, m)
+    return best
+
+
+def largeur_titre(txt, pt):
+    """largeur (pt) d'un titre de grille : Helvetica Neue 67 Medium Condensed, en capitales"""
+    global _FONT_TITRE
+    if _FONT_TITRE is None:
+        import os
+        from PIL import ImageFont
+        _FONT_TITRE = ImageFont.truetype(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'assets',
+                                         'polices', '3f2d5574-helvetica-neue-55', 'HelveticaNeue-MediumCond.otf'), 1000)
+    return _FONT_TITRE.getlength(txt.upper()) * pt / 1000
+
 DAYS = ['Mer', 'Jeu', 'Ven', 'Sam', 'Dim', 'Lun', 'Mar']
 H_SECTION = 14.173228346456694
 H_DAYS = 19.84251968503937
@@ -192,8 +231,31 @@ def build_one(d, story_id, we, total_w_pt, h_film=18.0, split=None, day_w=22.0):
         c = add_cell(TPL['name'], 0, r)
         c.set('FillColor', row_fill[0]); c.set('FillTint', row_fill[1])
         main, sub = auto_split(name)
-        bas = (sub + ' · ' if sub else '') + dur + (' · ' + opts['etiquette'] if opts.get('etiquette') else '')
-        set_runs(c, [main, '\u2028' + bas])
+        suite = dur + (' · ' + opts['etiquette'] if opts.get('etiquette') else '')
+        chasse = None
+        if TITRE_UNE_LIGNE:
+            dispo = (total_w_pt - 7 * day_w) - 5.67 - 2.83 - 1.0
+            entier = ' '.join(name) if isinstance(name, (list, tuple)) else name
+            r1 = dispo / largeur_titre(entier, TITRE_PT)
+            if r1 >= TITRE_CHASSE_MIN:                       # titre entier sur une ligne
+                main, sub, chasse = entier, '', min(1.0, r1)
+            else:                                            # 2 lignes, 2e partie à la même taille
+                main, sub, lmax = coupe_equilibree(entier, ' · ' + suite)
+                chasse = min(1.0, dispo / lmax)
+        if TITRE_UNE_LIGNE and sub:
+            set_runs(c, [main, '\u2028' + ' · ' + suite])
+            _t = list(c.iter('CharacterStyleRange'))[0]
+            _t2 = copy.deepcopy(_t)
+            for x in list(_t2):
+                if x.tag in ('Content', 'Br'):
+                    _t2.remove(x)
+            etree.SubElement(_t2, 'Content').text = '\u2028' + sub
+            _t.addnext(_t2)
+            _b = list(c.iter('Content'))[-1]
+            _b.text = ' · ' + suite
+        else:
+            bas = (sub + ' · ' if sub else '') + suite
+            set_runs(c, [main, '\u2028' + bas])
         for k in ('LeftInset', 'TextLeftInset'):
             c.set(k, '5.67')
         for k in ('RightInset', 'TextRightInset'):
@@ -201,7 +263,10 @@ def build_one(d, story_id, we, total_w_pt, h_film=18.0, split=None, day_w=22.0):
         for psr in c.iter('ParagraphStyleRange'):
             psr.set('LeftIndent', '0')
         for k, x in enumerate(c.iter('CharacterStyleRange')):
-            x.set('PointSize', '8' if k == 0 else '7')
+            _titre = 'light' not in x.get('AppliedCharacterStyle', '')
+            x.set('PointSize', '8' if _titre else '7')
+            if chasse is not None and _titre and chasse < 1.0:
+                x.set('HorizontalScale', str(round(chasse * 100, 1)))   # titre resserré pour tenir sur sa ligne
             if opts.get('court'):
                 x.set('Skew', '12')                      # courts-métrages en italique
         if opts.get('coeur'):                            # coup de cœur : ♥ (Zapf Dingbats) couleur du cinéma après le titre
