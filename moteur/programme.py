@@ -467,6 +467,38 @@ def round_bottom(x0, x1, ybot, sp, h_row=None):
             X, Y = ap(m, *M(node.get(k)))
             nx, ny = ap(mi, X, (ybot - h_row * 25.4 / 72) * PT - OY)
             node.set(k, f'{nx} {ny}')
+    # coins arrondis : les coins carrés des cellules de la dernière ligne (fond rose/gris) dépassaient de la courbe
+    # → 2 caches pleins blancs qui épousent l'arrondi, sous le filet (repris du Fauteuil Rouge, retour Adrien 08/10/2026)
+    pts = list(u.find('Properties/PathGeometry/GeometryPathType/PathPointArray'))
+    L, yb = M(pts[1].get('Anchor'))[0], M(pts[2].get('Anchor'))[1]
+    R = M(pts[4].get('Anchor'))[0]
+    rx = M(pts[2].get('Anchor'))[0] - L
+    ry = yb - M(pts[1].get('Anchor'))[1]
+    e = 1.2
+    coins = [
+        [((L - e, yb - ry),) * 3, ((L, yb - ry),) * 3, ((L + rx, yb), (L, yb), (L + rx, yb)),
+         ((L + rx, yb + e),) * 3, ((L - e, yb + e),) * 3],
+        [((R - rx, yb),) * 3, ((R, yb - ry), (R, yb), (R, yb - ry)), ((R + e, yb - ry),) * 3,
+         ((R + e, yb + e),) * 3, ((R - rx, yb + e),) * 3],
+    ]
+    for coin in coins:
+        c = copy.deepcopy(u)
+        c.set('Self', d.newid())
+        c.set('FillColor', 'Color/Paper')
+        c.set('StrokeColor', 'Swatch/None'); c.set('StrokeWeight', '0')
+        for _a in ('StrokeTint',):
+            if c.get(_a) is not None:
+                del c.attrib[_a]
+        gp = c.find('Properties/PathGeometry/GeometryPathType')
+        gp.set('PathOpen', 'false')
+        arr = gp.find('PathPointArray')
+        for n in list(arr):
+            arr.remove(n)
+        for (a, l, r_) in coin:
+            n = etree.SubElement(arr, 'PathPointType')
+            n.set('Anchor', f'{a[0]} {a[1]}'); n.set('LeftDirection', f'{l[0]} {l[1]}')
+            n.set('RightDirection', f'{r_[0]} {r_[1]}')
+        u.addprevious(c)
 
 
 for vi, we in enumerate(WEEKENDS):

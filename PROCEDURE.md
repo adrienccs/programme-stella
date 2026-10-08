@@ -270,3 +270,4 @@ Journal :
 - 06/10/2026 : création du kit Stella à partir du 7e Art (v16/v09) ; séances 4,50 € en rouge ; 10 lignes de grille max.
 - 06/10/2026 (affiche v03) : textes des grilles de l'affiche agrandis (corps fixes, `affiche_corps_grille`, `affiche_h_ligne` 20, bas 338 mm).
 - 06/10/2026 (v02) : 4 fiches en semaine 3 grâce à `"h_ligne": 17` (semaine à 9 lignes) + résumés de 2 lignes ; films Ciné-Kids sans fiche = OK (programme Ciné-Kids dédié).
+- 08/10/2026 (programme v09 / affiche v10) : bas arrondis des grilles — les coins carrés des cellules de la dernière ligne dépassaient de l'arrondi → `round_bottom` ajoute 2 caches blancs en forme de coin courbe sous le filet (comme le 7e Art et le Fauteuil Rouge), programme et affiche. Rien d'autre.
